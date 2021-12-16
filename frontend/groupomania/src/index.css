@@ -40,8 +40,9 @@ body {
   align-items: center;
 }
 
-.rounded-circle {
-  width: 28%;
+.picture-profile {
+  width: 50%;
+  clip-path: circle();
 }
 
 /* Contenu principal entre header et footer (login et signup) */
@@ -50,7 +51,6 @@ body {
   display: flex;
   align-items: center;
   height: 80vh;
-  /* min-width: 350px; */
 }
 
 /* Footer */
