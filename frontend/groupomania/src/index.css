@@ -86,3 +86,55 @@ body {
     height: 85vh;
   }
 }
+
+/* Page publications, page home */
+.card {
+  margin-bottom: 1rem;
+  width: 60rem;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 3%), 0 0 2px rgb(0 0 0 / 6%),
+    0 2px 6px rgb(0 0 0 / 12%);
+}
+
+.new-publication {
+  background-color: #e1f1f152 !important;
+  border-radius: 10px;
+}
+
+.author-date-publication {
+  display: flex;
+  flex-direction: column;
+}
+
+.picture-profile-publication {
+  width: 4rem !important;
+  clip-path: circle();
+}
+
+.publication-author {
+  font-weight: bold;
+}
+
+.publication-date {
+  color: #a9a1a1;
+}
+
+.publication-content {
+  padding: 0.5rem;
+  border-bottom: solid 0.1rem #e5e0e0;
+}
+
+.publication-icons {
+  padding: 0.5rem;
+}
+
+/* Commentaires de publications */
+.picture-profile-comment {
+  width: 2rem !important;
+  clip-path: circle();
+}
+
+.comment-text {
+  border: solid 0.1rem #e5e0e0;
+  border-radius: 10px;
+  background-color: #e1f1f152;
+}
