@@ -10,6 +10,8 @@ import FormControl from 'react-bootstrap/FormControl';
 
 import ProfilImage from '../assets/images/profile1.jpg';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 /**
  * Représente la page profil
  */
@@ -62,7 +64,7 @@ const Profile = () => {
           </div>
           <p>
             <small>Vous disposez d'un compte admin</small>
-            <p>icône d'information à coller près d'admin</p>
+            <FontAwesomeIcon icon='fa-solid fa-circle-info' />
           </p>
           <Button
             variant='outline-danger'
