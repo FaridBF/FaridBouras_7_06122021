@@ -8,6 +8,12 @@ import Home from './components/Home';
 import Profile from './components/Profile';
 import Footer from './components/Footer';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+
+// ajout de la librairie des icônes
+library.add(fas);
+
 const App = () => {
   return (
     <div className='page-container'>

@@ -10,6 +10,8 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import ProfilImage from '../assets/images/profile1.jpg';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 /**
  * Représente la page principale avec les publications
  */
@@ -74,8 +76,8 @@ const Home = () => {
               </Row>
               <Row className='publication-icons'>
                 <Col>
-                  <Button variant='primary'>Commenter</Button>
-                  <Button variant='primary'>Aimer</Button>
+                  <FontAwesomeIcon color='blue' icon='fa-solid fa-thumbs-up' />
+                  <FontAwesomeIcon color='blue' icon='fa-solid fa-message' />
                 </Col>
               </Row>
               {/* Commentaires */}
@@ -92,7 +94,7 @@ const Home = () => {
                 </Col>
                 <Col>
                   <Button variant='danger'>
-                    <i className='far fa-trash-alt'></i>
+                    <FontAwesomeIcon icon='fa-solid fa-trash' />
                   </Button>
                 </Col>
               </Row>
@@ -111,7 +113,7 @@ const Home = () => {
                 </Col>
                 <Col>
                   <Button variant='danger'>
-                    <i className='far fa-trash-alt'></i>
+                    <FontAwesomeIcon icon='fa-solid fa-trash' />
                   </Button>
                 </Col>
               </Row>
