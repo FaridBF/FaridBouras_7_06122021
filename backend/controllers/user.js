@@ -1,5 +1,6 @@
 // permet un cryptage sécurisé avec un algorithme unidirectionnel.
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Chrgt des variables d'env° du fichier .env dans process.env
 const dotenv = require('dotenv');
@@ -9,8 +10,8 @@ const db_connection = require('../config/database');
 
 /**
  * Inscription d'un utilisateur classique (non admin)
- * @param  {} req : informations utilisateur reçues par le front
- * @param  {} res : réponse envoyée du back vers le front
+ * @param  {first_name, last_name, email, password} req : informations utilisateur reçues par le front
+ * @param  {code, message} res : réponse envoyée du back vers le front
  */
 exports.signup = (req, res) => {
   bcrypt
@@ -36,4 +37,47 @@ exports.signup = (req, res) => {
     })
     .catch((error) => res.status(500).json({ error }));
   // .catch((error) => console.log(error));
+};
+
+/**
+ * Connexion d'un utilisateur
+ * @param  {email, password} req : informations utilisateur reçues par le front
+ * @param  {code, message} res : réponse envoyée du back vers le front
+ */
+exports.login = (req, res) => {
+  const userToLogin = {
+    ...req.body
+  };
+  const sql_query_login = `SELECT * FROM user WHERE email = "${userToLogin.email}";`;
+  const db = db_connection.getDB();
+  db.query(sql_query_login, userToLogin, async (err, result) => {
+    // console.log(result);
+    if (!result) {
+      res.status(400).json({ err });
+    } else {
+      // si utilisateur trouvé en BDD, récupérer données suivantes
+      const userFound = {
+        id: result[0].id,
+        hashedPassword: result[0].password
+      };
+      await bcrypt
+        .compare(userToLogin.password, userFound.hashedPassword)
+        .then((valid) => {
+          if (!valid) {
+            return res.status(401).json({ error: 'Mot de passe incorrect !' });
+          }
+          res.status(200).json({
+            token: jwt.sign(
+              // envoie d'un token en chaîne de caractère
+              { userId: userFound.id }, // user id: identifiant utilisateur
+              process.env.SECRET_TOKEN,
+              { expiresIn: '24h' }
+            ),
+            userId: userFound.id
+          });
+          // console.log(res);
+        });
+      res.status(200).json({ message: 'Utilisateur connecté avec succès !' });
+    }
+  });
 };
