@@ -1,7 +1,8 @@
 const express = require('express');
-const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
+
+const userRoutes = require('./routes/user.js');
 
 // Lancement du framework Express
 const app = express();
@@ -28,5 +29,8 @@ app.use(
     extended: true
   })
 );
+
+// Enregistrement des routes dans notre application
+app.use('/api/user', userRoutes);
 
 module.exports = app;
