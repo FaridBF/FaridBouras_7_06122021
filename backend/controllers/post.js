@@ -28,3 +28,22 @@ exports.createPost = (req, res) => {
     }
   });
 };
+
+/**
+ * Récupération d'un post via l'ID
+ * @param  {id} req : informations reçues par le front dans params
+ * @param  {code, l'ensemble des données du post} res : réponse envoyée du back vers le front
+ */
+exports.getPostById = (req, res) => {
+  const sql_query = `SELECT * FROM post WHERE id = ${req.params.id}`;
+  const db = db_connection.getDB();
+  db.query(sql_query, (err, result) => {
+    console.log(result);
+    if (!result) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+      //   throw err;
+    } else {
+      res.status(201).json(result[0]);
+    }
+  });
+};
