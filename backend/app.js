@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const userRoutes = require('./routes/user.js');
+const postRoutes = require('./routes/post.js');
 
 // Lancement du framework Express
 const app = express();
@@ -32,5 +33,6 @@ app.use(
 
 // Enregistrement des routes dans notre application
 app.use('/api/user', userRoutes);
+app.use('/api/post', postRoutes);
 
 module.exports = app;
