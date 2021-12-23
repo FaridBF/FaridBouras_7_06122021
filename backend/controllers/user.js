@@ -81,3 +81,44 @@ exports.login = (req, res) => {
     }
   });
 };
+
+/**
+ * Modification d'un User
+ * @param  {id, first_name} req : informations reçues par le front (id du user dans params)
+ * @param  {code, message} res : réponse envoyée du back vers le front
+ */
+exports.updateUser = (req, res) => {
+  const userToUpdate = {
+    ...req.body
+  };
+  const sql_query = `UPDATE user SET first_name = "${userToUpdate.first_name}", update_time = NOW() WHERE id = "${req.params.id}"`;
+  const db = db_connection.getDB();
+  db.query(sql_query, userToUpdate, (err, result) => {
+    if (!result) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+    } else {
+      res
+        .status(201)
+        .json({ message: "L'utilisateur a été modifié avec succès !" });
+    }
+  });
+};
+
+/**
+ * Suppresion d'un User
+ * @param  {id} req : informations reçues par le front (id du user dans params)
+ * @param  {code, message} res : réponse envoyée du back vers le front
+ */
+exports.deleteUser = (req, res) => {
+  const sql_query = `DELETE FROM user WHERE id = ${req.params.id}`;
+  const db = db_connection.getDB();
+  db.query(sql_query, (err, result) => {
+    if (!result) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+    } else {
+      res
+        .status(201)
+        .json({ message: "L'utilisateur a bien été supprimé avec succès !" });
+    }
+  });
+};
