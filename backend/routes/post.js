@@ -8,7 +8,7 @@ const postCtrl = require('../controllers/post');
 //Routage
 router.post('/create', postCtrl.createPost);
 router.get('/:id', postCtrl.getPostById);
-
+router.put('/:id', postCtrl.updatePost);
 router.delete('/:id', postCtrl.deletePost);
 
 module.exports = router;
