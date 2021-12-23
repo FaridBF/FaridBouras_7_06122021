@@ -67,3 +67,27 @@ exports.deletePost = (req, res) => {
     }
   });
 };
+/**
+ * Modification d'un post
+ * @param  {content, image, link, user_id,} req : informations reçues par le front (id du post dans params)
+ * @param  {code, message} res : réponse envoyée du back vers le front
+ */
+exports.updatePost = (req, res) => {
+  // si image ou link sont null, les supprimer
+  if (req.body.image === null) delete req.body.image;
+  if (req.body.link === null) delete req.body.link;
+  const postToUpdate = {
+    ...req.body
+  };
+  const sql_query = `UPDATE post SET ? , update_time = NOW()  WHERE id = "${req.params.id}"`;
+  const db = db_connection.getDB();
+  db.query(sql_query, postToUpdate, (err, result) => {
+    if (!result) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+    } else {
+      res
+        .status(201)
+        .json({ message: 'Votre publication a été modifiée avec succès !' });
+    }
+  });
+};
