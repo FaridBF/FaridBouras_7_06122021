@@ -11,4 +11,7 @@ router.get('/:id', postCtrl.getPostById);
 router.put('/:id', postCtrl.updatePost);
 router.delete('/:id', postCtrl.deletePost);
 
+//like and dislike
+router.post('/opinion/:id', postCtrl.giveOpinion);
+
 module.exports = router;
