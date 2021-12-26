@@ -67,6 +67,7 @@ exports.deletePost = (req, res) => {
     }
   });
 };
+
 /**
  * Modification d'un post
  * @param  {content, image, link, user_id,} req : informations reçues par le front (id du post dans params)
@@ -86,7 +87,7 @@ exports.updatePost = (req, res) => {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
       res
-        .status(201)
+        .status(200)
         .json({ message: 'Votre publication a été modifiée avec succès !' });
     }
   });

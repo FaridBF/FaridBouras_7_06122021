@@ -38,7 +38,7 @@ exports.deleteComment = (req, res) => {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
       res
-        .status(201)
+        .status(200)
         .json({ message: 'Votre commentaire a été supprimé avec succès !' });
     }
   });
@@ -57,7 +57,7 @@ exports.updateComment = (req, res) => {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
       res
-        .status(201)
+        .status(200)
         .json({ message: 'Votre commentaire a été modifié avec succès !' });
     }
   });
