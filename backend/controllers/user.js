@@ -83,22 +83,39 @@ exports.login = (req, res) => {
 };
 
 /**
+ * Affichage de l'ensemble des données du User sans le mot de passe
+ * @param  {is_admin, first_name, last_name, email, picture, create_time, update_time} req : informations utilisateur reçues par le front
+ * @param  {code, l'ensemble des données du User sans le mot de passe} res : réponse envoyée du back vers le front
+ */
+exports.getUserDetails = (req, res) => {
+  const sql_query = `SELECT is_admin, first_name, last_name, email, picture, create_time, update_time FROM user WHERE id = ${req.params.id};`;
+  const db = db_connection.getDB();
+  db.query(sql_query, (err, result) => {
+    if (!result) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+    } else {
+      res.status(200).json(result[0]);
+    }
+  });
+};
+
+/**
  * Modification d'un User
- * @param  {id, first_name} req : informations reçues par le front (id du user dans params)
+ * @param  {id, first_name, last_name} req : informations reçues par le front (id du user dans params)
  * @param  {code, message} res : réponse envoyée du back vers le front
  */
 exports.updateUser = (req, res) => {
   const userToUpdate = {
     ...req.body
   };
-  const sql_query = `UPDATE user SET first_name = "${userToUpdate.first_name}", update_time = NOW() WHERE id = "${req.params.id}"`;
+  const sql_query = `UPDATE user SET first_name = "${userToUpdate.first_name}", last_name = "${userToUpdate.last_name}", update_time = NOW() WHERE id = "${req.params.id}";`;
   const db = db_connection.getDB();
   db.query(sql_query, userToUpdate, (err, result) => {
     if (!result) {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
       res
-        .status(201)
+        .status(200)
         .json({ message: "L'utilisateur a été modifié avec succès !" });
     }
   });
@@ -110,7 +127,7 @@ exports.updateUser = (req, res) => {
  * @param  {code, message} res : réponse envoyée du back vers le front
  */
 exports.deleteUser = (req, res) => {
-  const sql_query = `DELETE FROM user WHERE id = ${req.params.id}`;
+  const sql_query = `DELETE FROM user WHERE id = ${req.params.id};`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     if (!result) {
@@ -119,6 +136,26 @@ exports.deleteUser = (req, res) => {
       res
         .status(201)
         .json({ message: "L'utilisateur a bien été supprimé avec succès !" });
+    }
+  });
+};
+
+/**
+ * Permet de modifier les droits admin d'un User
+ * @param  {id, is_admin} req : informations reçues par le front (id du user dans params)
+ * @param  {code, message} res : réponse envoyée du back vers le front
+ */
+exports.setAdminUser = (req, res) => {
+  const userToAdmin = {
+    ...req.body
+  };
+  const sql_query = `UPDATE user SET is_admin = "${userToAdmin.is_admin}", update_time = NOW() WHERE id = "${req.params.id}";`;
+  const db = db_connection.getDB();
+  db.query(sql_query, (err, result) => {
+    if (!result) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+    } else {
+      res.status(200).json({ message: 'Vos droits ont été modifiés !' });
     }
   });
 };
