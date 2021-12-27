@@ -19,9 +19,11 @@ exports.signup = (req, res) => {
     .then((hash) => {
       const userToCreate = {
         ...req.body,
-        password: hash
+        password: hash,
+        // Image par défaut avatar
+        picture: `${req.protocol}://${req.get('host')}/images/defaultAvatar.png`
       };
-      const sql_query = `INSERT INTO user (is_admin, first_name, last_name, email, password, picture, create_time, update_time) VALUES (0, "${req.body.first_name}", "${req.body.last_name}", "${req.body.email}", "${hash}", NULL, NOW(), NOW());`;
+      const sql_query = `INSERT INTO user (is_admin, first_name, last_name, email, password, picture, create_time, update_time) VALUES (0, "${req.body.first_name}", "${req.body.last_name}", "${req.body.email}", "${hash}", "${userToCreate.picture}", NOW(), NOW());`;
       // connexion à la BDD
       const db = db_connection.getDB();
       // envoie de la requête SQL
@@ -105,12 +107,20 @@ exports.getUserDetails = (req, res) => {
  * @param  {code, message} res : réponse envoyée du back vers le front
  */
 exports.updateUser = (req, res) => {
+  // si filename, changer chemin de filename sinon
+  // if (req.body.picture === null) delete req.body.picture;
   const userToUpdate = {
-    ...req.body
+    ...req.body,
+    // sauvegarde du chemin de l'image
+    // si un fichier est envoyé, sauvegarder nom donné par multer, sinon, avatar par défaut
+    picture: `${req.protocol}://${req.get('host')}/images/${
+      req.file ? req.file.filename : 'defaultAvatar.png'
+    }`
   };
   const sql_query = `UPDATE user SET first_name = "${userToUpdate.first_name}", last_name = "${userToUpdate.last_name}", update_time = NOW() WHERE id = "${req.params.id}";`;
   const db = db_connection.getDB();
-  db.query(sql_query, userToUpdate, (err, result) => {
+  // db.query(sql_query, userToUpdate, (err, result) => {
+  db.query(sql_query, (err, result) => {
     if (!result) {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
