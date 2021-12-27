@@ -6,7 +6,15 @@ const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 const commentRoutes = require('./routes/comment');
 
-// const path = require('path');
+const helmet = require('helmet');
+const nocache = require('nocache');
+const session = require('cookie-session');
+
+/** Le module de chemin de noeud
+ * Le path module fournit de nombreuses fonctionnalités très utiles pour accéder et interagir avec le système de fichiers.
+   Il n'est pas nécessaire de l'installer. Faisant partie du noyau Node, il peut être utilisé en l'exigeant: 'const path = require('path')'
+ */
+const path = require('path');
 
 // Lancement du framework Express
 const app = express();
@@ -26,6 +34,28 @@ app.use((req, res, next) => {
   next();
 });
 
+// Sécuriser Express en définissant divers en-têtes HTTP
+app.use(helmet());
+
+// Sécurisation des cookies afin d'accroître la sécurité
+const expiryDate = new Date(Date.now() + 60 * 60 * 1000); // 1 heure
+app.use(
+  session({
+    cookie: {
+      domain: `http://localhost:${process.env.port || '3000'}`,
+      expires: expiryDate,
+      httpOnly: true,
+      path: '/',
+      secure: true
+    },
+    name: process.env.SECRET_NAME,
+    secret: process.env.SECRET_SESSION
+  })
+);
+
+// Pour désactiver la mise en cache du navigateur
+app.use(nocache());
+
 // Transformation du corps de la requête en objet JSON utilisable
 app.use(express.json()); // (remplace body parser)
 app.use(
@@ -34,8 +64,8 @@ app.use(
   })
 );
 
-// Rendre le dossier  des "images" complémentement statique
-// app.use('/images', express.static(path.join(__dirname, 'images')));
+// Donner accès au dossier static : "images"
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Enregistrement des routes dans notre application
 app.use('/api/user', userRoutes);
