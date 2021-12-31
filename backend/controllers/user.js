@@ -8,6 +8,16 @@ dotenv.config();
 
 const db_connection = require('../config/database');
 
+// Cookie/token
+const maxAge = '24h';
+const createToken = (id) => {
+  return jwt.sign(
+    { userId: id }, // user id: identifiant utilisateur
+    process.env.SECRET_TOKEN,
+    { expiresIn: maxAge }
+  );
+};
+
 /**
  * Inscription d'un utilisateur classique (non admin)
  * @param  {first_name, last_name, email, password} req : informations utilisateur reçues par le front
@@ -68,18 +78,15 @@ exports.login = (req, res) => {
           if (!valid) {
             return res.status(401).json({ error: 'Mot de passe incorrect !' });
           }
+          const token = createToken(userFound.id);
+          res.cookie('jwt', token, { httpOnly: true, expiresIn: maxAge });
+          // res.status(200)
           res.status(200).json({
-            token: jwt.sign(
-              // envoie d'un token en chaîne de caractère
-              { userId: userFound.id }, // user id: identifiant utilisateur
-              process.env.SECRET_TOKEN,
-              { expiresIn: '24h' }
-            ),
             userId: userFound.id
           });
           // console.log(res);
         });
-      res.status(200).json({ message: 'Utilisateur connecté avec succès !' });
+      // res.status(200).json({ message: 'Utilisateur connecté avec succès !' });
     }
   });
 };
@@ -168,4 +175,14 @@ exports.setAdminUser = (req, res) => {
       res.status(200).json({ message: 'Vos droits ont été modifiés !' });
     }
   });
+};
+
+/**
+ * Permet la déconnexion d'un utilisateur en vidant le cookie
+ * @param  {} req : aucun
+ * @param  {} res : jwt (token vide)
+ */
+exports.logout = (req, res) => {
+  res.cookie('jwt', '', { maxAge: 1 });
+  res.redirect('/'); // pr que la requête aboutisse
 };
