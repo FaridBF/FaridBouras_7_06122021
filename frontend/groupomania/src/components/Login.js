@@ -5,10 +5,12 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
+import { useDispatch } from 'react-redux';
 
 // import SvgLoginImage from './SvgLoginImage';
 import LoginImage from '../assets/images/login.png';
 import axios from 'axios';
+import { getUser } from '../actions/user.actions';
 // import axios from '../api';
 
 /**
@@ -17,6 +19,8 @@ import axios from 'axios';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // hook useDispatch pour déclencher des actions
+  const dispatch = useDispatch();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -35,8 +39,10 @@ const Login = () => {
           console.log(res);
           alert(res.data.error);
         } else {
-          // tt est ok, on est redirigé sur page home
-          window.location = '/home';
+          // si tt est ok, récupérer le userId du résultat de la req et
+          dispatch(getUser(res.data.userId));
+          // et rediriger sur page home
+          // window.location = '/home';
         }
       })
       // erreur pendant requête axios
