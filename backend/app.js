@@ -9,6 +9,7 @@ const commentRoutes = require('./routes/comment');
 const helmet = require('helmet');
 const nocache = require('nocache');
 const session = require('cookie-session');
+const cookieParser = require('cookie-parser');
 
 /** Le module de chemin de noeud
  * Le path module fournit de nombreuses fonctionnalités très utiles pour accéder et interagir avec le système de fichiers.
@@ -16,12 +17,24 @@ const session = require('cookie-session');
  */
 const path = require('path');
 
+/** Sécurité : contre les injections de commande, scripts intersites XSS.
+ * La "sanitizeMiddleware fonction" nettoie et échappe à la requête, aux paramètres et au corps des requêtes pour se protéger contre les scripts intersites (XSS)
+ * C'est également contre les attaques par injection de commande (la config objet est facultatif)
+ * Le middleware acceptera toutes les propriétés trouvées dans les propriétés body, query, et paramsobject de a req.
+ */
+// var sanitizer = require('sanitizer');
+// const sanitizeMiddleware = require('sanitize-middleware');
+// const expressSanitizer = require('express-sanitizer');
+
+// Import du cors
+// const cors = require('cors');
+
 // Lancement du framework Express
 const app = express();
 
 // Permet de pallier à l'erreur CORS
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', `${process.env.CLIENT_URL}`);
   // Ajout de headers à l'objet "response"
   res.setHeader(
     'Access-Control-Allow-Headers',
@@ -31,11 +44,20 @@ app.use((req, res, next) => {
     'Access-Control-Allow-Methods',
     'GET, POST, PUT, DELETE, PATCH, OPTIONS'
   );
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
+});
+
+// trouvé sur discord erreur cors (peut-être pr la prérequest)
+app.options('/*', (_, res) => {
+  res.sendStatus(200);
 });
 
 // Sécuriser Express en définissant divers en-têtes HTTP
 app.use(helmet());
+
+// Lire cookie
+app.use(cookieParser());
 
 // Sécurisation des cookies afin d'accroître la sécurité
 const expiryDate = new Date(Date.now() + 60 * 60 * 1000); // 1 heure
@@ -52,6 +74,14 @@ app.use(
     secret: process.env.SECRET_SESSION
   })
 );
+
+// Sanitize Middleware (contre les injections)
+// app.use(sanitizeMiddleware());
+
+// Mount express-sanitizer middleware here
+// app.use(expressSanitizer());
+
+// app.use(sanitizer());
 
 // Pour désactiver la mise en cache du navigateur
 app.use(nocache());
