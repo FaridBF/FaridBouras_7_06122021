@@ -23,6 +23,24 @@ body {
 .header-container {
   border-bottom: solid #ffe4e4 0.25rem;
   background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+}
+
+.button_connexion {
+  color: white !important;
+  background-color: #fd3409 !important;
+  border-color: #fd3409 !important;
+}
+
+.container {
+  height: 900px;
+}
+
+.img-fluid {
+  width: 100%;
 }
 
 /* Page profil */
@@ -63,7 +81,12 @@ body {
 
 @media screen and (min-width: 0px) and (max-width: 640px) {
   .header-container {
-    position: fixed;
+    border-bottom: solid #ffe4e4 0.25rem;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
   }
 
   .main-container {
@@ -84,6 +107,22 @@ body {
 @media screen and (min-width: 640px) and (max-width: 1400px) {
   .main-container {
     height: 85vh;
+  }
+  .button_connexion {
+    height: 45px;
+  }
+
+  .container {
+    height: 900px;
+  }
+
+  .header-container {
+    border-bottom: solid #ffe4e4 0.25rem;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
   }
 }
 
@@ -137,4 +176,21 @@ body {
   border: solid 0.1rem #e5e0e0;
   border-radius: 10px;
   background-color: #e1f1f152;
+}
+
+.col-lg-8 {
+  width: 88% !important;
+  margin-left: -25px;
+}
+
+.col-lg-3 {
+  display: flex;
+}
+
+.icon_thumbs {
+  margin-right: 15px;
+}
+
+.container {
+  height: 900px;
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from 'react-bootstrap/Button';
 
 import Card from 'react-bootstrap/Card';
@@ -76,7 +75,11 @@ const Home = () => {
               </Row>
               <Row className='publication-icons'>
                 <Col>
-                  <FontAwesomeIcon color='blue' icon='fa-solid fa-thumbs-up' />
+                  <FontAwesomeIcon
+                    className='icon_thumbs'
+                    color='blue'
+                    icon='fa-solid fa-thumbs-up'
+                  />
                   <FontAwesomeIcon color='blue' icon='fa-solid fa-message' />
                 </Col>
               </Row>
@@ -93,31 +96,28 @@ const Home = () => {
                   <p className='mb-0'>C'est génial !</p>
                 </Col>
                 <Col>
-                  <Button variant='danger'>
+                  <Button className='button_danger' variant='danger'>
                     <FontAwesomeIcon icon='fa-solid fa-trash' />
                   </Button>
                 </Col>
               </Row>
               {/* Fin commentaires */}
-              {/* Commentaires */}
-              <Row className='d-flex align-items-center'>
-                <Col xs={2} md={1} lg={1}>
-                  <img
-                    src={ProfilImage}
-                    className='picture-profile-comment img-fluid'
-                    alt="Visuel de l'utilisateur"
+              {/* Commentaire à écrire */}
+              <Row>
+                <FloatingLabel
+                  controlId='floatingTextarea'
+                  label="Quoi de neuf aujourd'hui ?"
+                  // placeholder="Quoi de neuf aujourd'hui ?"
+                  className='mb-2 mt-3'
+                >
+                  <Form.Control
+                    className='new-publication'
+                    as='textarea'
+                    placeholder='Leave a comment here'
                   />
-                </Col>
-                <Col className='comment-text' xs={8} md={8} lg={8}>
-                  <p className='mb-0'>Super idée...</p>
-                </Col>
-                <Col>
-                  <Button variant='danger'>
-                    <FontAwesomeIcon icon='fa-solid fa-trash' />
-                  </Button>
-                </Col>
+                </FloatingLabel>
               </Row>
-              {/* Fin commentaires */}
+              {/* Fin commentaire à écrire */}
             </Card.Body>
           </Card>
         </Row>
