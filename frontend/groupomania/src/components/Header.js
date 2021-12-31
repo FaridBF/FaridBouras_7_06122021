@@ -24,10 +24,22 @@ const Header = () => {
             height='180'
             width='180'
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} md={3} lg={3}>
           {/* Gestion des boutons connexion/déconnexion */}
           {userIsConnected === true ? (
-            <Button variant='primary' size='lg' active>
-              <FontAwesomeIcon icon='fa-solid fa-right-from-bracket' />
+            <Button
+              className='button_connexion'
+              variant='primary'
+              size='lg'
+              active
+            >
+              <FontAwesomeIcon
+                className='icon_connexion'
+                icon='fa-solid fa-right-from-bracket'
+              />
             </Button>
           ) : (
             <Button variant='secondary' size='lg' active>
