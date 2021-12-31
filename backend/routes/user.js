@@ -21,4 +21,7 @@ router.put('/:id/adminrights', auth, userCtrl.setAdminUser);
 router.get('/:id', auth, userCtrl.getUserDetails);
 // router.get('/:id', userCtrl.getUserDetails);
 
+// vérifier token sur toutes les routes /user
+router.get('*', auth);
+
 module.exports = router;
