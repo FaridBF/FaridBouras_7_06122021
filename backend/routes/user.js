@@ -8,6 +8,7 @@ const multer = require('../middleware/multer-config');
 // inscripton et connexion
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
+router.get('/logout', userCtrl.logout);
 
 // modififer et suppresion d'un user
 router.put('/:id', auth, multer, userCtrl.updateUser);
@@ -18,5 +19,6 @@ router.put('/:id/adminrights', auth, userCtrl.setAdminUser);
 
 // affichage de l'ensemble des données du User sans le mot de passe
 router.get('/:id', auth, userCtrl.getUserDetails);
+// router.get('/:id', userCtrl.getUserDetails);
 
 module.exports = router;
