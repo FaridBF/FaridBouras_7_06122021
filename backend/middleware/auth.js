@@ -1,27 +1,42 @@
 // middleware d'auth pour vérifier le token envoyé par l'applicat° frontend
 const jwt = require('jsonwebtoken');
+const db_connection = require('../config/database');
 
 const dotenv = require('dotenv');
 dotenv.config();
 
 module.exports = (req, res, next) => {
+  // récupération du cookie avec nom 'jwt'
+  const token = req.cookies.jwt;
   try {
-    // récupération du deuxième élément de ce tableau  via split
-    const token = req.headers.authorization.split(' ')[1];
-    // (clé secrète en argument identique à la fonction login)
-    const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
-    // récupération du user ID encoder dans l'objet JS
-    const userId = decodedToken.userId;
-    // vérif du userID dans le corps de la requête différent du userID du token
-    if (req.body.userId && req.body.userId !== userId) {
-      // on ne souhaite pas authentifier la requête
-      throw 'Invalid user ID';
+    if (token) {
+      // (clé secrète en argument identique à la fonction login)
+      const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
+      // récupération du userId depuis cookie
+      const userId = decodedToken.userId;
+      // vérif du userId dans le corps de la requête différent du userId du token
+      // connexion à la BDD
+      const db = db_connection.getDB();
+      const sql_query = `SELECT id FROM user WHERE id = ${userId};`;
+      db.query(sql_query, (err, result) => {
+        // si aucun user trouvé
+        if (!result) {
+          // res.status(400).json({ message: 'Une erreur est survenue.' });
+          throw 'Utilisateur invalide';
+        } else {
+          // permeettre l'accès à la route
+          next();
+        }
+      });
     } else {
-      next();
+      // TODO: à vérifier
+      res.clearCookie();
+      res.status(401).json({ message: 'Non autorisé' });
     }
   } catch {
+    // TODO: à vérifier
     res.status(401).json({
-      error: new Error('Invalid request!')
+      error: new Error('Non autorisé')
     });
   }
 };
