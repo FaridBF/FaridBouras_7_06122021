@@ -22,6 +22,7 @@ const Login = () => {
   // hook useDispatch pour déclencher des actions
   const dispatch = useDispatch();
 
+  // Gère le submit du formulaire de connexion
   const handleLogin = (e) => {
     e.preventDefault();
 
