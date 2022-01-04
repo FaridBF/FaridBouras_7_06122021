@@ -1,12 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Header from './components/Header';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Home from './components/Home';
 import Profile from './components/Profile';
-import Footer from './components/Footer';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -19,7 +17,6 @@ const App = () => {
     <div className='page-container'>
       <div className='content-wrap'>
         <Router>
-          <Header />
           <Switch>
             <Route exact path='/' component={Login} />
             <Route path='/login' component={Login} />
@@ -29,7 +26,6 @@ const App = () => {
           </Switch>
         </Router>
       </div>
-      <Footer />
     </div>
   );
 };
