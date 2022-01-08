@@ -45,12 +45,14 @@ const Login = () => {
         } else {
           // si tt est ok, récupérer le userId du résultat de la req et
           dispatch(getUser(res.data.userId));
-          // et rediriger sur page home
+          // et rediriger sur page home (TODO: voir comment conserver le store car actuellement on perd la data)
           // window.location = '/home';
+          alert('Vous êtes connecté(e) !');
         }
       })
       // erreur pendant requête axios
       .catch((err) => {
+        alert("Impossible d'accéder au serveur");
         console.log(err);
       });
     // empêcher la multiple soumission du form et le vider
