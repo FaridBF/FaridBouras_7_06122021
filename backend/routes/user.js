@@ -10,8 +10,9 @@ router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
 router.get('/logout', userCtrl.logout);
 
-// modififer et suppresion d'un user
+// modification et suppresion d'un user
 router.put('/:id', auth, multer, userCtrl.updateUser);
+router.post('/upload/:id', auth, multer, userCtrl.updateUserImage);
 router.delete('/:id', auth, userCtrl.deleteUser);
 
 // paramètrage des droits (admin) d'un user
