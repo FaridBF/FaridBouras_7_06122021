@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
+const fs = require('fs');
 const db_connection = require('../config/database');
 
 // Cookie/token
@@ -31,7 +32,9 @@ exports.signup = (req, res) => {
         ...req.body,
         password: hash,
         // Image par défaut avatar
-        picture: `${req.protocol}://${req.get('host')}/images/defaultAvatar.png`
+        picture: `${req.protocol}://${req.get(
+          'host'
+        )}/images/default/defaultAvatar.png`
       };
       const sql_query = `INSERT INTO user (is_admin, first_name, last_name, email, password, picture, create_time, update_time) VALUES (0, "${req.body.first_name}", "${req.body.last_name}", "${req.body.email}", "${hash}", "${userToCreate.picture}", NOW(), NOW());`;
       // connexion à la BDD
@@ -63,9 +66,10 @@ exports.login = (req, res) => {
   const sql_query_login = `SELECT * FROM user WHERE email = "${userToLogin.email}";`;
   const db = db_connection.getDB();
   db.query(sql_query_login, userToLogin, async (err, result) => {
-    // console.log(result);
     if (!result) {
-      res.status(400).json({ err });
+      res.status(400).json({ error: 'Une erreur est survenue' });
+    } else if (result.length === 0) {
+      res.status(400).json({ error: 'Email incorrect !' });
     } else {
       // si utilisateur trouvé en BDD, récupérer données suivantes
       const userFound = {
@@ -97,9 +101,10 @@ exports.login = (req, res) => {
  * @param  {code, l'ensemble des données du User sans le mot de passe} res : réponse envoyée du back vers le front
  */
 exports.getUserDetails = (req, res) => {
-  const sql_query = `SELECT is_admin, first_name, last_name, email, picture, create_time, update_time FROM user WHERE id = ${req.params.id};`;
+  const sql_query = `SELECT * FROM user WHERE id = ${req.params.id};`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
+    // console.log(result);
     if (!result) {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
@@ -134,6 +139,57 @@ exports.updateUser = (req, res) => {
       res
         .status(200)
         .json({ message: "L'utilisateur a été modifié avec succès !" });
+    }
+  });
+};
+
+/**
+ * Modification de l'image de profil d'un User
+ * @param  {id, picture} req : informations reçues par le front (id du user dans params)
+ * @param  {code, message} res : réponse envoyée du back vers le front
+ */
+exports.updateUserImage = async (req, res) => {
+  // console.log('change image back', req.file);
+  // TROUVER UTILISATEUR ET SUPPRIMER SON IMAGE SI DIFFERENTE DE CELLE PAR DEFAUT
+  const db = db_connection.getDB();
+  const sql_query_find_old_picture = `SELECT picture FROM user WHERE id = ${req.params.id};`;
+  // trouver image de ce user
+  db.query(await sql_query_find_old_picture, (err, result) => {
+    if (result) {
+      // si ce n'est pas l'image par défaut
+      // (si elle n'est pas dans le dossier default)
+      const picture_found = result[0].picture;
+      if (!picture_found.includes('/default/')) {
+        // la supprimer du dossier 'images'
+        const imageToRemove = picture_found.split('/images/')[1];
+        fs.unlink(`images/${imageToRemove}`, () => {
+          console.log('Image de profil supprimée avec succès !');
+        });
+      }
+    }
+  });
+  // si pas d'image envoyé par le front, supprimer req.body.picture
+  // TODO: voir si supprimer car on ne modifie rien d'autre que l'image
+  if (req.body.picture === null) delete req.body.picture;
+  // console.log('---REQ.BODY---', req.body);
+  // console.log('---REQ.FILE---', req.file);
+  const userToUpdate = {
+    ...req.body,
+    // sauvegarde du chemin de l'image
+    // si un fichier est envoyé, sauvegarder nom donné par multer, sinon, avatar par défaut
+    picture: req.file
+      ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      : `${req.protocol}://${req.get('host')}/images/default/defaultAvatar.png`
+  };
+  // console.log('new image: ', userToUpdate.picture);
+  const sql_query = `UPDATE user SET picture = "${userToUpdate.picture}", update_time = NOW() WHERE id = "${req.params.id}";`;
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+    } else {
+      res
+        .status(200)
+        .json({ message: "L'image de profil a été modifiée avec succès !" });
     }
   });
 };
