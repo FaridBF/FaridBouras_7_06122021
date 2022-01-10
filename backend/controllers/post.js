@@ -1,5 +1,8 @@
 const db_connection = require('../config/database');
 
+const fs = require('fs'); // accès aux # opérations liés au système de fichiers
+const { json } = require('express');
+
 /**
  * Création d'un post
  * @param  {content, image, link, create_time, update_time, user_id} req : informations reçues par le front
@@ -9,6 +12,13 @@ exports.createPost = (req, res) => {
   // si image ou link sont null, les supprimer
   if (req.body.image === null) delete req.body.image;
   if (req.body.link === null) delete req.body.link;
+  if (req.body.image === null) {
+    delete req.body.image;
+  } else {
+    req.body.image = `${req.protocol}://${req.get('host')}/images/${
+      req.file.filename
+    }`;
+  }
   const postToCreate = {
     ...req.body
   };
@@ -29,13 +39,28 @@ exports.createPost = (req, res) => {
   });
 };
 
+
+exports.getPostsList = (req, res) => {
+  // const sql_query =
+  //   "SELECT * FROM post, user WHERE post.user_id=user.id ORDER BY post.create_time DESC;";
+  const sql_query = 'SELECT post.id, post.content, post.image, post.link, post.create_time, post.user_id, user.is_admin, user.first_name, user.last_name, user.picture FROM post LEFT JOIN user ON post.user_id=user.id ORDER BY post.create_time DESC;'
+    const db = db_connection.getDB();
+    db.query(sql_query, (err, result) => {
+      if (!result) {
+        res.status(400).json({ message: 'Une erreur est survenue.' });
+    } else {
+      res.status(200).json(result);
+    }
+  });
+};
+
 /**
  * Récupération d'un post via l'ID
  * @param  {id} req : informations reçues par le front dans params
  * @param  {code, l'ensemble des données du post} res : réponse envoyée du back vers le front
  */
 exports.getPostById = (req, res) => {
-  const sql_query = `SELECT * FROM post WHERE id = ${req.params.id}`;
+  const sql_query = `SELECT * FROM post WHERE id = ${req.params.id};`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     console.log(result);
@@ -55,15 +80,25 @@ exports.getPostById = (req, res) => {
  */
 exports.deletePost = (req, res) => {
   // TODO: vérifier droits (admin ou user propriétaire)
-  const sql_query = `DELETE FROM post WHERE id = ${req.params.id}`;
+  const sql_query_find_post = `SELECT * FROM post WHERE id = ${req.params.id};`;
+  const sql_query = `DELETE FROM post WHERE id = ${req.params.id};`;
   const db = db_connection.getDB();
-  db.query(sql_query, (err, result) => {
-    if (!result) {
-      res.status(400).json({ message: 'Une erreur est survenue.' });
-    } else {
-      res
-        .status(200)
-        .json({ message: 'Votre publication a été supprimée avec succès' });
+  // supprimer l'image du post
+  db.query(sql_query_find_post, (err, result) => {
+    if (result) {
+      const filename = result[0].image.split('/images/')[1];
+      fs.unlink(`images/${filename}`, () => {
+        // supprimer le post
+        db.query(sql_query, (err, result) => {
+          if (!result) {
+            res.status(400).json({ message: 'Une erreur est survenue.' });
+          } else {
+            res.status(200).json({
+              message: 'Votre publication a été supprimée avec succès'
+            });
+          }
+        });
+      });
     }
   });
 };
@@ -153,3 +188,4 @@ exports.giveOpinion = (req, res) => {
     });
   }
 };
+
