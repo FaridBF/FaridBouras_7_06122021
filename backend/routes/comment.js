@@ -7,6 +7,8 @@ router.post('/create', auth, commentCtrl.createComment);
 
 router.get('/:id/all', auth, commentCtrl.getCommentsList);
 
+router.get('/:id', auth, commentCtrl.getCommentById);
+
 router.put('/:id', auth, commentCtrl.updateComment);
 
 router.delete('/:id', auth, commentCtrl.deleteComment);

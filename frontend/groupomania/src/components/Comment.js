@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from '../api';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -9,8 +10,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProfilImage from '../assets/images/profile1.jpg';
 
 const Comment = (comment) => {
-  const currentComment = comment.data;
-  //   console.log('post: ', currentPost);
+  const currentCommentId = comment.data.id;
+  console.log('commentId: ', currentCommentId);
+  const [currentComment, setCurrentComment] = useState();
+  // récupérer id de commentaire fourni en propriété par composant parent : CommentsList
+
+  useEffect(() => {
+    const getCommentById = async () => {
+      await axios.get(`comment/${currentCommentId}`).then((res) => {
+        console.log('RES.DATA du commentaire ', res.data);
+        setCurrentComment(res.data);
+      });
+    };
+    getCommentById();
+  }, []);
   return (
     <>
       {/* Première publication */}
@@ -27,7 +40,11 @@ const Comment = (comment) => {
                 /> */}
               </Col>
               <Col className='comment-text' xs={8} md={8} lg={8}>
-                <p className='mb-0'>{currentComment.content}</p>
+                {/* <p>
+                  {currentComment.first_name} {currentComment.last_name} -{' '}
+                  {currentComment.create_time}
+                </p>
+                <p className='mb-0'>{currentComment.content}</p> */}
               </Col>
               <Col>
                 <Button className='button_danger' variant='danger'>
