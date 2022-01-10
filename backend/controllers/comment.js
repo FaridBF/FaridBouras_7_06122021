@@ -71,8 +71,27 @@ exports.getCommentsList = (req, res) => {
     if (!result) {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
-      console.log('resultat commentaires', result);
+      // console.log('resultat commentaires', result);
       res.status(200).json(result);
+    }
+  });
+};
+
+exports.getCommentById = (req, res) => {
+  // const sql_query = `SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content AS comment_content FROM user INNER JOIN comment ON comment.user_id = user.id INNER JOIN post ON comment.post_id = "${req.params.id}" ORDER BY comment.create_time DESC;`;
+  const sql_query = `SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content 
+  FROM comment
+  LEFT JOIN user 
+  ON comment.user_id=user.id 
+  WHERE comment.id = "${req.params.id}";`;
+  // const sql_query = `SELECT * FROM comment WHERE id = "${req.params.id}";`;
+  const db = db_connection.getDB();
+  db.query(sql_query, (err, result) => {
+    if (!result) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+    } else {
+      console.log('resultat commentaire détails', result);
+      res.status(200).json(result[0]);
     }
   });
 };
