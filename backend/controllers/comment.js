@@ -65,7 +65,7 @@ exports.updateComment = (req, res) => {
 
 exports.getCommentsList = (req, res) => {
   // const sql_query = `SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content AS comment_content FROM user INNER JOIN comment ON comment.user_id = user.id INNER JOIN post ON comment.post_id = "${req.params.id}" ORDER BY comment.create_time DESC;`;
-  const sql_query = `SELECT * FROM comment WHERE comment.post_id = "${req.params.id}";`;
+  const sql_query = `SELECT * FROM comment WHERE comment.post_id = "${req.params.id}" ORDER BY comment.create_time DESC;`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     if (!result) {
