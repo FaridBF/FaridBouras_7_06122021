@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CommentsList from './CommentsList';
+import { date_options } from '../utils/date';
 
 /**
  * Représente le composant d'une publication
@@ -32,7 +33,10 @@ const Post = (props) => {
                   {`${currentPost.first_name} ${currentPost.last_name}`}
                 </small>
                 <small className='publication-date'>
-                  {currentPost.create_time}
+                  {new Date(currentPost.create_time).toLocaleDateString(
+                    'fr-FR',
+                    date_options
+                  )}
                 </small>
               </Col>
             </Row>
