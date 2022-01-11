@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { date_options } from '../utils/date';
 
 /**
  * Représente le composant d'un commentaire
@@ -48,7 +49,10 @@ const Comment = (props) => {
                 <Col className='comment-text' xs={8} md={8} lg={8}>
                   <p>
                     {currentComment.first_name} {currentComment.last_name} -
-                    {currentComment.create_time}
+                    {new Date(currentComment.create_time).toLocaleDateString(
+                      'fr-FR',
+                      date_options
+                    )}
                   </p>
                   <p className='mb-0'>{currentComment.content}</p>
                 </Col>
