@@ -1,17 +1,17 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ProfilImage from '../assets/images/profile1.jpg';
 import CommentsList from './CommentsList';
 
-const Post = (post) => {
-  const currentPost = post.data;
-  //   console.log('post: ', currentPost);
+/**
+ * Représente le composant d'une publication
+ * @param  {} props: objet représentant une publication
+ */
+const Post = (props) => {
+  const currentPost = props.post;
+
   return (
     <>
       {/* Première publication */}
