@@ -40,9 +40,9 @@ const Login = () => {
         // si back retourne une erreur, l'afficher
         // TODO: gérer les erreurs
         if (res.status !== 200) {
-          console.log(res);
           alert(res.data.error);
         } else {
+          console.log('login:', res.data);
           // si tt est ok, récupérer le userId du résultat de la req et
           dispatch(getUser(res.data.userId));
           // et rediriger sur page home (TODO: voir comment conserver le store car actuellement on perd la data)

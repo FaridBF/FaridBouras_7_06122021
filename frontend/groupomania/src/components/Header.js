@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -17,13 +17,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
  */
 const Header = () => {
   // récupère (state) infos user depuis Store
-  const userData = useSelector((state) => state.userReducer);
+  // const userData = useSelector((state) => state.userReducer);
+  // récupérer infos de l'utilisateur depuis localstorage
+  const userInfo = JSON.parse(localStorage.getItem('user_details'));
+
   const handleLogout = (e) => {
     e.preventDefault();
     axios.get(`${process.env.REACT_APP_API_URL}api/user/logout`);
+    // vider le localstorage
+    localStorage.clear();
     // Vider le store et faire la redirection vers page login
     window.location = `/login`;
   };
+
   return (
     <Container className='header-container' fluid>
       <Row>
@@ -42,9 +48,10 @@ const Header = () => {
       <Row>
         <Col xs={12} md={3} lg={3}>
           {/* Gestion des boutons connexion/déconnexion */}
-          {userData.first_name !== undefined ? (
+          {/* {userData.first_name !== undefined ? ( */}
+          {userInfo ? (
             <>
-              <p>Hello, {userData.first_name}</p>
+              <p>Hello, {userInfo.first_name}</p>
               {/* TODO: ajouter icone profil */}
               <Link to='/profile'>Profil</Link>
               <Button
