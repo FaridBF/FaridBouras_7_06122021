@@ -16,6 +16,9 @@ import { logger } from 'redux-logger';
 
 import rootReducer from './reducers';
 
+/**
+ * Crée le store Redux
+ */
 const store = createStore(
   // retirer composeWithDevtools en production afin d'éviter l'accès au store côté client
   rootReducer,
