@@ -21,7 +21,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
  */
 
 const Profile = () => {
-  const userData = useSelector((state) => state.userReducer);
+  // const userData = useSelector((state) => state.userReducer);
+  // récupérer infos de l'utilisateur depuis localstorage
+  const userInfo = JSON.parse(localStorage.getItem('user_details'));
 
   return (
     <>
@@ -30,8 +32,7 @@ const Profile = () => {
         <Row className='profile-container'>
           <Col className='picture-container' xs={12} md={12} lg={4}>
             <img
-              src={userData.picture}
-              // src={ProfilImage}
+              src={userInfo.picture}
               className='picture-profile img-fluid'
               alt="Visuel de l'utilisateur"
             />
@@ -40,12 +41,12 @@ const Profile = () => {
           <Col xs={8} md={8} lg={8}>
             <p>
               Prénom:
-              {userData.first_name}
+              {userInfo.first_name}
             </p>
-            <p>Nom: {userData.last_name}</p>
-            <p>Email: {userData.email}</p>
-            <p>Id: {userData.id}</p>
-            <div className='d-flex'>
+            <p>Nom: {userInfo.last_name}</p>
+            <p>Email: {userInfo.email}</p>
+            {/* TODO: supprimer si décision de ne pas modifier cela */}
+            {/* <div className='d-flex'>
               <InputGroup className='mb-3'>
                 <FormControl
                   placeholder='Profession'
@@ -68,8 +69,8 @@ const Profile = () => {
                   Modifier
                 </Button>
               </InputGroup>
-            </div>
-            <p>
+            </div> */}
+            <p title='Un compte admin permet de modérer des comptes, publications et commentaires.'>
               <small>Vous disposez d'un compte admin </small>
               <FontAwesomeIcon icon='fa-solid fa-circle-info' />
             </p>

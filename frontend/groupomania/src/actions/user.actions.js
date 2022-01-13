@@ -18,6 +18,20 @@ export const getUser = (userId) => {
       .get(`${process.env.REACT_APP_API_URL}api/user/${userId}`)
       .then((res) => {
         // console.log(res);
+        // enregistrer les infos du user dans le localstorage pour conserver données
+        localStorage.setItem(
+          'user_details',
+          JSON.stringify({
+            id: res.data.id,
+            email: res.data.email,
+            is_admin: res.data.is_admin,
+            first_name: res.data.first_name,
+            last_name: res.data.last_name,
+            picture: res.data.picture,
+            create_time: res.data.create_time,
+            update_time: res.data.update_time
+          })
+        );
         // on indique au reducer que l'action GET_USER contiendra cette data
         dispatch({ type: GET_USER, payload: res.data });
       })
