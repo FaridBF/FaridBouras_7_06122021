@@ -90,7 +90,6 @@ exports.getCommentById = (req, res) => {
     if (!result) {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
-      console.log('resultat commentaire détails', result);
       res.status(200).json(result[0]);
     }
   });

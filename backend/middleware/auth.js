@@ -21,8 +21,11 @@ module.exports = (req, res, next) => {
       db.query(sql_query, (err, result) => {
         // si aucun user trouvé
         if (!result) {
-          // res.status(400).json({ message: 'Une erreur est survenue.' });
-          throw 'Utilisateur invalide';
+          res.status(400).json({ message: 'Une erreur est survenue.' });
+          // throw 'Utilisateur invalide';
+        } else if (result.length === 0) {
+          res.status(400).json({ message: 'Utilisateur invalide !' });
+          // throw 'Utilisateur invalide';
         } else {
           // permeettre l'accès à la route
           next();
@@ -36,7 +39,7 @@ module.exports = (req, res, next) => {
   } catch {
     // TODO: à vérifier
     res.status(401).json({
-      error: new Error('Non autorisé')
+      error: 'Non autorisé'
     });
   }
 };
