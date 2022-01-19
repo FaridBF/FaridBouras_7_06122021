@@ -48,11 +48,13 @@ const Comment = (props) => {
                 </Col>
                 <Col className='comment-text' xs={8} md={8} lg={8}>
                   <p>
-                    {currentComment.first_name} {currentComment.last_name} -
-                    {new Date(currentComment.create_time).toLocaleDateString(
-                      'fr-FR',
-                      date_options
-                    )}
+                    {currentComment.first_name} {currentComment.last_name} - 
+                    <span className='date-text'>
+                      {new Date(currentComment.create_time).toLocaleDateString(
+                        'fr-FR',
+                        date_options
+                      )}
+                    </span>
                   </p>
                   <p className='mb-0'>{currentComment.content}</p>
                 </Col>
@@ -67,17 +69,24 @@ const Comment = (props) => {
             )}
             {/* Fin commentaire */}
             {/* Commentaire à écrire */}
-            <Row>
+            <Row className='d-flex align-items-center'>
               <FloatingLabel
                 controlId='floatingTextarea'
                 label='Entrez votre commentaire'
-                className='mb-2 mt-3'
+                className='mb-2 mt-3 d-flex'
               >
                 <Form.Control
                   className='new-publication'
                   as='textarea'
                   placeholder='Leave a comment here'
                 />
+                <Button
+                  variant='primary'
+                  type='submit'
+                  aria-describedby='Publier'
+                >
+                  Publier
+                </Button>
               </FloatingLabel>
             </Row>
             {/* Fin commentaire à écrire */}

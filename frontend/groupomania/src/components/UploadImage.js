@@ -25,8 +25,8 @@ const UploadImage = () => {
   };
 
   return (
-    <form onSubmit={handleImage}>
-      <label htmlFor='file'>Envie de changer d'image ?</label>
+    <form className='style-form-profile' onSubmit={handleImage}>
+      <label htmlFor='file'>Changer de photo de profil</label>
       <input
         id='file'
         name='file'
@@ -34,7 +34,7 @@ const UploadImage = () => {
         accept='.jpg, .jpeg, .png'
         onChange={(e) => setImage(e.target.files[0])}
       />
-      {/* Afficher bouton validation uniquement si une nvelle image choisie */}
+      {/* Afficher bouton validation uniquement si une novelle image choisie */}
       {image ? (
         <Button
           variant='primary'
@@ -42,7 +42,7 @@ const UploadImage = () => {
           aria-describedby='Envoyer nouvelle photo'
           className='col-lg-5'
         >
-          Valider
+          Valider votre nouvelle photo
         </Button>
       ) : (
         ''
