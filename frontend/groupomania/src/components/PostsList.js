@@ -1,31 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import axios from '../api';
 import Post from './Post';
+import { isEmpty } from '../utils/isEmpty';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { getPosts } from '../actions/post.actions';
 
 /**
  * Représente le composant de la liste des publications
  */
 const PostsList = () => {
-  const [posts, setPosts] = useState([]);
+  const [loadPost, setLoadPost] = useState(true); // charger les posts ?
+  const [count, setCount] = useState(5);
+  const dispatch = useDispatch(); // pr envoyer une action
+  const posts = useSelector((state) => state.postReducer); // récupérer posts du store
+
+  const loadMore = () => {
+    // si on est en bas de page au scroll
+    if (
+      window.innerHeight + document.documentElement.scrollTop + 1 >
+      document.scrollingElement.scrollHeight
+    ) {
+      // relancer le chargement des posts
+      setLoadPost(true);
+    }
+  };
 
   useEffect(() => {
-    /**
-     * Requête à l'api pour récupérer la liste des publications et infos des auteurs
-     */
-    const getPosts = async () => {
-      await axios.get('post/all').then((res) => {
-        setPosts(res.data);
-      });
-    };
-    getPosts();
-  }, []);
+    if (loadPost) {
+      dispatch(getPosts(count));
+      // arrêter de lancer le chargement des posts
+      setLoadPost(false);
+      // incrémenter de 5 pour afficher les 5 posts suivants
+      setCount(count + 5);
+    }
+    // si on scroll vers le bas, appeler fonction 'loadMore'
+    window.addEventListener('scroll', loadMore);
+    return () => window.removeEventListener('scroll', loadMore);
+  }, [loadPost, dispatch]); // dès que loadPost change, exécuter useEffect de nouveau
 
   return (
     <>
-      {/* Parcourir la liste des publications pour afficher chaqune en la passant dans les propriétés (props) du composant Post */}
-      {posts.map((post) => {
-        return <Post post={post} key={post.id} />;
-      })}
+      {!isEmpty(posts[0]) &&
+        posts.map((post, index) => {
+          return <Post post={post} key={index} />;
+        })}
     </>
   );
 };
