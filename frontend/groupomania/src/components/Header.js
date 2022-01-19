@@ -45,15 +45,20 @@ const Header = () => {
           </Link>
         </Col>
       </Row>
-      <Row>
-        <Col xs={12} md={3} lg={3}>
+      <Row className='header_nav_bar'>
+        <Col className='header_position_nav_bar' xs={12} md={3} lg={3}>
           {/* Gestion des boutons connexion/déconnexion */}
           {/* {userData.first_name !== undefined ? ( */}
           {userInfo ? (
             <>
-              <p>Hello, {userInfo.first_name}</p>
-              {/* TODO: ajouter icone profil */}
-              <Link to='/profile'>Profil</Link>
+              <p className='header_hello_user'>Hello, {userInfo.first_name}</p>
+              <Link className='header_link' to='/profile'>
+                <img
+                  src={userInfo.picture}
+                  className='picture-profile img-fluid'
+                  alt="Visuel de l'utilisateur"
+                />
+              </Link>
               <Button
                 onClick={handleLogout}
                 className='button_connexion'

@@ -38,38 +38,25 @@ const Profile = () => {
             />
             <UploadImage />
           </Col>
-          <Col xs={8} md={8} lg={8}>
+          <Col className='text-container' xs={8} md={8} lg={8}>
             <p>
               Prénom:
-              {userInfo.first_name}
+              <span className='style-text-container'>
+                {' '}
+                {userInfo.first_name}
+              </span>
             </p>
-            <p>Nom: {userInfo.last_name}</p>
-            <p>Email: {userInfo.email}</p>
-            {/* TODO: supprimer si décision de ne pas modifier cela */}
-            {/* <div className='d-flex'>
-              <InputGroup className='mb-3'>
-                <FormControl
-                  placeholder='Profession'
-                  aria-label='Profession du profil'
-                  aria-describedby='Profession du profil'
-                />
-                <Button variant='outline-secondary' id='button-addon2'>
-                  Modifier
-                </Button>
-              </InputGroup>
-            </div>
-            <div>
-              <InputGroup className='mb-3'>
-                <FormControl
-                  placeholder='Description'
-                  aria-label='Description du profil' // nom du champs
-                  aria-describedby='Description du profil' // description du champs
-                />
-                <Button variant='outline-secondary' id='button-addon2'>
-                  Modifier
-                </Button>
-              </InputGroup>
-            </div> */}
+            <p>
+              Nom:
+              <span className='style-text-container'>
+                {' '}
+                {userInfo.last_name}
+              </span>
+            </p>
+            <p>
+              Email:{' '}
+              <span className='style-text-container'> {userInfo.email}</span>
+            </p>
             <p title='Un compte admin permet de modérer des comptes, publications et commentaires.'>
               <small>Vous disposez d'un compte admin </small>
               <FontAwesomeIcon icon='fa-solid fa-circle-info' />

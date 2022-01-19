@@ -59,11 +59,11 @@ const Home = () => {
                   </Col>
                 </Row>
                 <Row>
-                  <Form onSubmit={handleSubmitPost}>
+                  <Form onSubmit={handleSubmitPost} className='what-s-up'>
                     <FloatingLabel
                       controlId='floatingTextarea'
                       label="Quoi de neuf aujourd'hui ?"
-                      className='mb-2 mt-3'
+                      className='new-publication'
                     >
                       <Form.Control
                         className='new-publication'
