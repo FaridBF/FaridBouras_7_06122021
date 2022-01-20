@@ -46,8 +46,9 @@ const Login = () => {
           // si tt est ok, récupérer le userId du résultat de la req et
           dispatch(getUser(res.data.userId));
           // et rediriger sur page home (TODO: voir comment conserver le store car actuellement on perd la data)
-          // window.location = '/home';
           alert('Vous êtes connecté(e) !');
+          // redirection vers la page 'home'
+          window.location = '/home';
         }
       })
       // erreur pendant requête axios
