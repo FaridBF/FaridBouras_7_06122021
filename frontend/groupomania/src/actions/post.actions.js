@@ -22,3 +22,21 @@ export const getPosts = (num) => {
       .catch((err) => console.log(err));
   };
 };
+
+export const ADD_POSTS = 'ADD_POSTS';
+
+/**
+ * action qui crée une publication et l'envoie au reducer
+ * le reducer va ensuite modifier l'état actuel du store
+ * @param  {data} : représente la publication à envoyer au reducer
+ */
+export const addPost = (data) => {
+  return (dispatch) => {
+    return axios
+      .post(`${process.env.REACT_APP_API_URL}api/post/create`, data)
+      .then((res) => {
+        dispatch({ type: ADD_POSTS, payload: data });
+      })
+      .catch((err) => console.log(err));
+  };
+};

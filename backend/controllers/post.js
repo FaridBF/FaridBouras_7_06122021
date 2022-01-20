@@ -10,17 +10,13 @@ const { json } = require('express');
  */
 exports.createPost = (req, res) => {
   // si image ou link sont null, les supprimer
-  if (req.body.image === null) delete req.body.image;
+  // if (req.body.image === null) delete req.body.image;
   if (req.body.link === null) delete req.body.link;
-  if (req.body.image === null) {
-    delete req.body.image;
-  } else {
-    req.body.image = `${req.protocol}://${req.get('host')}/images/${
-      req.file.filename
-    }`;
-  }
   const postToCreate = {
-    ...req.body
+    ...req.body,
+    image: req.file
+      ? `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
+      : null
   };
   const sql_query = `INSERT INTO post SET ?`;
   // connexion à la BDD
@@ -39,15 +35,15 @@ exports.createPost = (req, res) => {
   });
 };
 
-
 exports.getPostsList = (req, res) => {
   // const sql_query =
   //   "SELECT * FROM post, user WHERE post.user_id=user.id ORDER BY post.create_time DESC;";
-  const sql_query = 'SELECT post.id, post.content, post.image, post.link, post.create_time, post.user_id, user.is_admin, user.first_name, user.last_name, user.picture FROM post LEFT JOIN user ON post.user_id=user.id ORDER BY post.create_time DESC;'
-    const db = db_connection.getDB();
-    db.query(sql_query, (err, result) => {
-      if (!result) {
-        res.status(400).json({ message: 'Une erreur est survenue.' });
+  const sql_query =
+    'SELECT post.id, post.content, post.image, post.link, post.create_time, post.user_id, user.is_admin, user.first_name, user.last_name, user.picture FROM post LEFT JOIN user ON post.user_id=user.id ORDER BY post.create_time DESC;';
+  const db = db_connection.getDB();
+  db.query(sql_query, (err, result) => {
+    if (!result) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
       res.status(200).json(result);
     }
@@ -188,4 +184,3 @@ exports.giveOpinion = (req, res) => {
     });
   }
 };
-

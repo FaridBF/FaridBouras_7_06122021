@@ -6,37 +6,42 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import Header from './Header';
 import PostsList from './PostsList';
 import Footer from './Footer';
-import ProfilImage from '../assets/images/profile1.jpg';
-import axios from '../api';
+import { useDispatch } from 'react-redux';
+import { addPost, getPosts } from '../actions/post.actions';
 
 /**
  * Représente la page principale avec les publications
  */
 const Home = () => {
   const [newPost, setNewPost] = useState('');
+  // récupérer infos de l'utilisateur depuis localstorage
+  const userInfo = JSON.parse(localStorage.getItem('user_details'));
+  const dispatch = useDispatch();
 
-  const handleSubmitPost = (e) => {
+  /**
+   * Gestion du submit d'une nouvelle publication
+   * @param  {} e: event
+   */
+  const handleSubmitPost = async (e) => {
     e.preventDefault();
-    console.log('newPost: ', newPost);
-    // posts.append(newPost)
-    // console.log("newPostsList: ", posts)
+    // si l'input n'est pas vide, envoyer la nvelle publication via le store
+    if (newPost.length > 0) {
+      const data = {
+        content: newPost,
+        user_id: userInfo.id
+      };
+      await dispatch(addPost(data));
+      setNewPost(''); // reset l'input
+      // rappeler de nouveau les posts via le store y compris le nouveau
+      dispatch(getPosts(5));
+    }
   };
 
-  // useEffect(() => {
-  //   const getPost = async () => {
-  //     await axios.get('post/17').then((res) => {
-  //       console.log('RES.DATA ', res.data);
-  //       setPosts(res.data[0]);
-  //       console.log(posts);
-  //     });
-  //   };
-  //   getPost();
-  // }, []);
   return (
     <>
       <Header />
@@ -49,13 +54,15 @@ const Home = () => {
                 <Row className='d-flex align-items-center'>
                   <Col xs={2} md={1} lg={1}>
                     <img
-                      src={ProfilImage}
+                      src={userInfo.picture}
                       className='picture-profile-publication img-fluid'
                       alt="Visuel de l'utilisateur"
                     />
                   </Col>
                   <Col className='author-date-publication'>
-                    <small className='publication-author'>Marie Dupont</small>
+                    <small className='publication-author'>
+                      {userInfo.first_name} {userInfo.last_name}
+                    </small>
                   </Col>
                 </Row>
                 <Row>
@@ -79,7 +86,8 @@ const Home = () => {
                     <Button
                       variant='primary'
                       type='submit'
-                      aria-describedby='Connexion'
+                      aria-describedby='Publier'
+                      disabled={newPost.length === 0}
                     >
                       Publier
                     </Button>
