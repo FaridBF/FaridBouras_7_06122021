@@ -41,8 +41,8 @@ const PostsList = () => {
   return (
     <>
       {!isEmpty(posts[0]) &&
-        posts.map((post, index) => {
-          return <Post post={post} key={index} />;
+        posts.map((post) => {
+          return <Post post={post} key={post.id} />;
         })}
     </>
   );

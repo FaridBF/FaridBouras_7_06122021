@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CommentsList from './CommentsList';
 import { date_options } from '../utils/date';
+// import Card from 'react-bootstrap/Card';
+
+// import CardComments from './CardComment';
 
 /**
  * Représente le composant d'une publication
@@ -12,6 +15,7 @@ import { date_options } from '../utils/date';
  */
 const Post = (props) => {
   const currentPost = props.post;
+  // const [showComments, setShowComments] = useState(false);
 
   return (
     <>
@@ -42,6 +46,13 @@ const Post = (props) => {
             </Row>
             <Row className='publication-content'>
               <Card.Text>{currentPost.content}</Card.Text>
+              {currentPost.image != undefined || currentPost.image != null ? (
+                <>
+                  <img className='publication-image' src={currentPost.image} />
+                </>
+              ) : (
+                ''
+              )}
             </Row>
             <Row className='publication-icons'>
               <Col>
@@ -50,7 +61,11 @@ const Post = (props) => {
                   color='blue'
                   icon='fa-solid fa-thumbs-up'
                 />
-                <FontAwesomeIcon color='blue' icon='fa-solid fa-message' />
+                <FontAwesomeIcon
+                  // onClick={() => setShowComments(!showComments)}
+                  color='blue'
+                  icon='fa-solid fa-message'
+                />
               </Col>
             </Row>
             <CommentsList post_id={currentPost.id} />
@@ -58,6 +73,7 @@ const Post = (props) => {
         </Card>
       </Row>
       {/* Fin Première publication */}
+      {/* {showComments && <CardComments post={Post} />} */}
     </>
   );
 };
