@@ -17,7 +17,6 @@ export const getUser = (userId) => {
     return axios
       .get(`${process.env.REACT_APP_API_URL}api/user/${userId}`)
       .then((res) => {
-        // console.log(res);
         // enregistrer les infos du user dans le localstorage pour conserver données
         localStorage.setItem(
           'user_details',
@@ -52,6 +51,20 @@ export const uploadImage = (data, id) => {
           .then((res) => {
             // console.log('nouvelle img', res);
             dispatch({ type: UPLOAD_IMAGE, payload: res.data.picture });
+            // récupérer infos user du localstorage actuel
+            const userInfoLocalStorage = JSON.parse(
+              localStorage.getItem('user_details')
+            );
+            // màj de l'image du localstorage
+            localStorage.setItem(
+              'user_details',
+              JSON.stringify({
+                ...userInfoLocalStorage,
+                picture: res.data.picture
+              })
+            );
+            // TODO: voir comment faire autrement qu'en faisant un reload
+            window.location.reload();
           });
       })
       .catch((err) => console.log(err));
