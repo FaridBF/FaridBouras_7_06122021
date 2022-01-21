@@ -243,6 +243,13 @@ body {
 .publication-content {
   padding: 0.5rem;
   border-bottom: solid 0.1rem #e5e0e0;
+  display: flex;
+  flex-direction: column;
+}
+
+img.publication-image {
+  max-width: 40%;
+  align-self: center;
 }
 
 .publication-icons {
