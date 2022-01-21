@@ -42,7 +42,6 @@ const Login = () => {
         if (res.status !== 200) {
           alert(res.data.error);
         } else {
-          console.log('login:', res.data);
           // si tt est ok, récupérer le userId du résultat de la req et
           dispatch(getUser(res.data.userId));
           // et rediriger sur page home (TODO: voir comment conserver le store car actuellement on perd la data)

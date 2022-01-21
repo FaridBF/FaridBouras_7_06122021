@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { uploadImage } from '../actions/user.actions';
 
 /**
@@ -9,17 +9,14 @@ import { uploadImage } from '../actions/user.actions';
 
 const UploadImage = () => {
   const [image, setImage] = useState();
-  console.log(image);
   const dispatch = useDispatch(); // déclencher action
-  const userData = useSelector((state) => state.userReducer);
+  const userData = JSON.parse(localStorage.getItem('user_details'));
 
   const handleImage = (e) => {
     e.preventDefault();
     const data = new FormData(); // objet JS pr mettre dans un package image + infos
     data.append('userId', userData.id);
     data.append('image', image);
-    console.log('imageToSend', image);
-    console.log('dataToSend', data);
     // déclencher action du store
     dispatch(uploadImage(data, userData.id));
   };
