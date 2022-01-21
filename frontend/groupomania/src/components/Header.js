@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 import Button from 'react-bootstrap/Button';
@@ -16,8 +15,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
  * Représente le header sur toutes les pages
  */
 const Header = () => {
-  // récupère (state) infos user depuis Store
-  // const userData = useSelector((state) => state.userReducer);
   // récupérer infos de l'utilisateur depuis localstorage
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
 
@@ -48,7 +45,6 @@ const Header = () => {
       <Row className='header_nav_bar'>
         <Col className='header_position_nav_bar' xs={12} md={3} lg={3}>
           {/* Gestion des boutons connexion/déconnexion */}
-          {/* {userData.first_name !== undefined ? ( */}
           {userInfo ? (
             <>
               <p className='header_hello_user'>Hello, {userInfo.first_name}</p>

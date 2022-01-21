@@ -1,15 +1,11 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+// import { useSelector } from 'react-redux';
 // import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
-
-import ProfilImage from '../assets/images/profile1.jpg';
 import Header from './Header';
 import Footer from './Footer';
 import UploadImage from './UploadImage';
@@ -24,6 +20,15 @@ const Profile = () => {
   // const userData = useSelector((state) => state.userReducer);
   // récupérer infos de l'utilisateur depuis localstorage
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
+
+  // useEffect(() => {
+  //   // si picture modifiée dans redux, modifier dans localstorage
+  //   // const userInfoLocalStorage = JSON.parse(localStorage.getItem('user_details'));
+  //   const userInfoLocalStorage = JSON.parse(localStorage['user_details']);
+  //   userInfoLocalStorage.picture = userData.picture;
+  //   // console.log('userInfoLocalStorage.picture', userInfoLocalStorage.picture);
+  //   // console.log('nvelle image dans localstorage', userInfo.picture);
+  // }, [userData]);
 
   return (
     <>
