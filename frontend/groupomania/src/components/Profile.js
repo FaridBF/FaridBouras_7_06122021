@@ -62,10 +62,16 @@ const Profile = () => {
               Email:{' '}
               <span className='style-text-container'> {userInfo.email}</span>
             </p>
-            <p title='Un compte admin permet de modérer des comptes, publications et commentaires.'>
-              <small>Vous disposez d'un compte admin </small>
-              <FontAwesomeIcon icon='fa-solid fa-circle-info' />
-            </p>
+            {/* Début phrase pour les utilisateurs admin */}
+            {userInfo.is_admin === 1 ? (
+              <p title='Un compte admin permet de modérer des comptes, publications et commentaires.'>
+                <small>Vous disposez d'un compte admin </small>
+                <FontAwesomeIcon icon='fa-solid fa-circle-info' />
+              </p>
+            ) : (
+              ''
+            )}
+            {/* Fin phrase pour les utilisateurs admin */}
             <Button
               variant='outline-danger'
               type='submit'
