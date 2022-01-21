@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -46,6 +47,7 @@ const Post = (props) => {
             </Row>
             <Row className='publication-content'>
               <Card.Text>{currentPost.content}</Card.Text>
+              {/* Début affichage image */}
               {currentPost.image != undefined || currentPost.image != null ? (
                 <>
                   <img className='publication-image' src={currentPost.image} />
@@ -53,6 +55,16 @@ const Post = (props) => {
               ) : (
                 ''
               )}
+              {/* Fin affichage image */}
+              {/* Début affichage lien */}
+              {currentPost.link != undefined || currentPost.link != null ? (
+                <>
+                  <Link to={currentPost.link}>{currentPost.link}</Link>
+                </>
+              ) : (
+                ''
+              )}
+              {/* Fin affichage lien */}
             </Row>
             <Row className='publication-icons'>
               <Col>
