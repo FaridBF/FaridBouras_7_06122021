@@ -11,11 +11,11 @@ const { json } = require('express');
 exports.createPost = (req, res) => {
   // si image ou link sont null, les supprimer
   // if (req.body.image === null) delete req.body.image;
-  if (req.body.link === null) delete req.body.link;
+  if (req.body.link === null || req.body.link.length === 0) delete req.body.link;
   const postToCreate = {
     ...req.body,
     image: req.file
-      ? `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
+      ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
       : null
   };
   const sql_query = `INSERT INTO post SET ?`;
