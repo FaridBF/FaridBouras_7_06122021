@@ -228,12 +228,14 @@ body {
   display: none;
 }
 
-.upload-post-image {
+.upload-post-image:hover,
+.upload-post-link:hover {
+  color: #fd34099c;
   cursor: pointer;
 }
 
-.upload-post-image:hover {
-  color: #fd34099c;
+#link-post {
+  width: 50%;
 }
 
 .author-date-publication {
