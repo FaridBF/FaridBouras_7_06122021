@@ -11,7 +11,8 @@ const { json } = require('express');
 exports.createPost = (req, res) => {
   // si image ou link sont null, les supprimer
   // if (req.body.image === null) delete req.body.image;
-  if (req.body.link === null || req.body.link.length === 0) delete req.body.link;
+  if (req.body.link === null || req.body.link.length === 0)
+    delete req.body.link;
   const postToCreate = {
     ...req.body,
     image: req.file
@@ -76,24 +77,36 @@ exports.getPostById = (req, res) => {
  */
 exports.deletePost = (req, res) => {
   // TODO: vérifier droits (admin ou user propriétaire)
-  const sql_query_find_post = `SELECT * FROM post WHERE id = ${req.params.id};`;
-  const sql_query = `DELETE FROM post WHERE id = ${req.params.id};`;
+  const sql_query_find_post = `SELECT * FROM post WHERE id = "${req.params.id}";`;
+  const sql_query = `DELETE FROM post WHERE id = "${req.params.id}";`;
   const db = db_connection.getDB();
   // supprimer l'image du post
   db.query(sql_query_find_post, (err, result) => {
-    if (result) {
-      const filename = result[0].image.split('/images/')[1];
-      fs.unlink(`images/${filename}`, () => {
-        // supprimer le post
-        db.query(sql_query, (err, result) => {
-          if (!result) {
-            res.status(400).json({ message: 'Une erreur est survenue.' });
-          } else {
-            res.status(200).json({
-              message: 'Votre publication a été supprimée avec succès'
-            });
-          }
+    if (err) {
+      res.status(400).json({
+        message:
+          'Une erreur est survenue lors de la recherche de la publication.'
+      });
+    } else {
+      // si image n'est pas null, la supprimer
+      if (result[0].image !== null) {
+        const filename = result[0].image.split('/images/')[1];
+        fs.unlink(`images/${filename}`, () => {
+          console.log('Image de publication supprimée avec succès !');
         });
+      }
+      // supprimer le post
+      db.query(sql_query, (err, result) => {
+        if (!result) {
+          res.status(400).json({
+            message:
+              'Une erreur est survenue lors de la suppression de la publication.'
+          });
+        } else {
+          res.status(200).json({
+            message: 'Votre publication a été supprimée avec succès !'
+          });
+        }
       });
     }
   });
