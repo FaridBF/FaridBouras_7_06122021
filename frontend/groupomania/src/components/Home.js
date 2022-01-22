@@ -19,11 +19,23 @@ import { addPost, getPosts } from '../actions/post.actions';
  * Représente la page principale avec les publications
  */
 const Home = () => {
-  const [newPost, setNewPost] = useState('');
+  const [postContent, setPostContent] = useState('');
   const [postImage, setPostImage] = useState(null);
+  const [displayLinkInput, setDisplayLinkInput] = useState(false);
+  const [postLink, setPostLink] = useState('');
   // récupérer infos de l'utilisateur depuis localstorage
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
   const dispatch = useDispatch();
+
+  /**
+   * Vider les inputs et reset les affichages
+   */
+  const resetNewPostInputs = () => {
+    setPostContent(''); // reset l'input de content
+    setPostImage(null); // reset image à poster
+    setPostLink(''); // reset le lien
+    setDisplayLinkInput(false); // ne plus afficher l'input de lien
+  };
 
   /**
    * Gestion du submit d'une nouvelle publication
@@ -32,17 +44,18 @@ const Home = () => {
   const handleSubmitPost = async (e) => {
     e.preventDefault();
     // si l'input n'est pas vide, envoyer la nvelle publication via le store
-    if (newPost.length > 0) {
+    if (postContent.length > 0) {
       // objet JS pr mettre dans un formData contenu du post
       const data = new FormData();
       data.append('user_id', userInfo.id);
-      data.append('content', newPost);
+      data.append('content', postContent);
       data.append('image', postImage);
+      data.append('link', postLink);
       await dispatch(addPost(data));
       // rappeler de nouveau les posts via le store y compris le nouveau
       dispatch(getPosts(5));
-      setNewPost(''); // reset l'input
-      setPostImage(null); // reset image à poster
+      // reset les champs
+      resetNewPostInputs();
     }
   };
 
@@ -81,9 +94,9 @@ const Home = () => {
                         as='textarea'
                         placeholder='Entrez votre message'
                         name='email'
-                        value={newPost}
+                        value={postContent}
                         onChange={(e) => {
-                          setNewPost(e.target.value);
+                          setPostContent(e.target.value);
                         }}
                       />
                     </FloatingLabel>
@@ -91,12 +104,12 @@ const Home = () => {
                       variant='primary'
                       type='submit'
                       aria-describedby='Publier'
-                      disabled={newPost.length === 0}
+                      disabled={postContent.length === 0}
                     >
                       Publier
                     </Button>
                   </Form>
-                  {/* Affichage image à poster */}
+                  {/* Début affichage image à poster */}
                   {postImage !== null ? (
                     <>
                       <p>Image ajoutée : {postImage.name}</p>
@@ -112,11 +125,13 @@ const Home = () => {
                     ''
                   )}
                 </Row>
+                {/* Fin affichage image à poster */}
+                {/* Début ajout image au post */}
                 <Row>
                   <label htmlFor='file-post'>
                     <FontAwesomeIcon
                       icon='fa-solid fa-image'
-                      color='blue'
+                      color='grey'
                       className='upload-post-image'
                     />
                   </label>
@@ -127,15 +142,30 @@ const Home = () => {
                     accept='.jpg, .jpeg, .png'
                     onChange={(e) => setPostImage(e.target.files[0])}
                   />
-
-                  <FontAwesomeIcon icon='fa-solid fa-link' color='blue' />
-                  {/* <Button
-                    variant='danger'
-                    type='submit'
-                    aria-describedby='Ajouter un lien'
-                  >
-                    Lien
-                  </Button> */}
+                </Row>
+                {/* Fin ajout image au post */}
+                <Row>
+                  <label htmlFor='link-post'>
+                    <FontAwesomeIcon
+                      icon='fa-solid fa-link'
+                      color='grey'
+                      className='upload-post-link'
+                      onClick={() => setDisplayLinkInput(!displayLinkInput)}
+                    />
+                  </label>
+                  {displayLinkInput ? (
+                    <input
+                      id='link-post'
+                      name='link-post'
+                      type='url'
+                      // pattern={'http://.*' || 'https://.*'}
+                      placeholder='Exemple de lien: https://groupomania.com'
+                      value={postLink}
+                      onChange={(e) => setPostLink(e.target.value)}
+                    />
+                  ) : (
+                    ''
+                  )}
                 </Row>
               </Card.Body>
             </Card>
