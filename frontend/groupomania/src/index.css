@@ -211,6 +211,8 @@ body {
     0 2px 6px rgb(0 0 0 / 12%);
 }
 
+/* Début nouvelle publication */
+
 .new-publication {
   background-color: #e1f1f152 !important;
   border-radius: 10px;
@@ -220,6 +222,18 @@ body {
 
 .what-s-up {
   display: flex;
+}
+
+#file-post {
+  display: none;
+}
+
+.upload-post-image {
+  cursor: pointer;
+}
+
+.upload-post-image:hover {
+  color: #fd34099c;
 }
 
 .author-date-publication {
@@ -246,6 +260,8 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+/* fin nouvelle publication */
 
 img.publication-image {
   max-width: 40%;
