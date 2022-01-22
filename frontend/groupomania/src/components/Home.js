@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import React, { useState } from 'react';
 
@@ -19,6 +20,7 @@ import { addPost, getPosts } from '../actions/post.actions';
  */
 const Home = () => {
   const [newPost, setNewPost] = useState('');
+  const [postImage, setPostImage] = useState(null);
   // récupérer infos de l'utilisateur depuis localstorage
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
   const dispatch = useDispatch();
@@ -31,14 +33,16 @@ const Home = () => {
     e.preventDefault();
     // si l'input n'est pas vide, envoyer la nvelle publication via le store
     if (newPost.length > 0) {
-      const data = {
-        content: newPost,
-        user_id: userInfo.id
-      };
+      // objet JS pr mettre dans un formData contenu du post
+      const data = new FormData();
+      data.append('user_id', userInfo.id);
+      data.append('content', newPost);
+      data.append('image', postImage);
       await dispatch(addPost(data));
-      setNewPost(''); // reset l'input
       // rappeler de nouveau les posts via le store y compris le nouveau
       dispatch(getPosts(5));
+      setNewPost(''); // reset l'input
+      setPostImage(null); // reset image à poster
     }
   };
 
@@ -92,6 +96,46 @@ const Home = () => {
                       Publier
                     </Button>
                   </Form>
+                  {/* Affichage image à poster */}
+                  {postImage !== null ? (
+                    <>
+                      <p>Image ajoutée : {postImage.name}</p>
+                      <Button
+                        className='button_danger'
+                        variant='danger'
+                        onClick={() => setPostImage(null)}
+                      >
+                        <FontAwesomeIcon icon='fa-solid fa-trash' />
+                      </Button>
+                    </>
+                  ) : (
+                    ''
+                  )}
+                </Row>
+                <Row>
+                  <label htmlFor='file-post'>
+                    <FontAwesomeIcon
+                      icon='fa-solid fa-image'
+                      color='blue'
+                      className='upload-post-image'
+                    />
+                  </label>
+                  <input
+                    id='file-post'
+                    name='file'
+                    type='file'
+                    accept='.jpg, .jpeg, .png'
+                    onChange={(e) => setPostImage(e.target.files[0])}
+                  />
+
+                  <FontAwesomeIcon icon='fa-solid fa-link' color='blue' />
+                  {/* <Button
+                    variant='danger'
+                    type='submit'
+                    aria-describedby='Ajouter un lien'
+                  >
+                    Lien
+                  </Button> */}
                 </Row>
               </Card.Body>
             </Card>
