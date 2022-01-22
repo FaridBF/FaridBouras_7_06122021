@@ -47,7 +47,9 @@ const Header = () => {
           {/* Gestion des boutons connexion/déconnexion */}
           {userInfo ? (
             <>
-              <p className='header_hello_user'>Hello, {userInfo.first_name}</p>
+              <p className='header_hello_user'>
+                Bienvenue, {userInfo.first_name}
+              </p>
               <Link className='header_link' to='/profile'>
                 <img
                   src={userInfo.picture}
