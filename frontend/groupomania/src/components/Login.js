@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import Form from 'react-bootstrap/Form';
@@ -36,7 +36,6 @@ const Login = () => {
       .post(`${process.env.REACT_APP_API_URL}api/user/login`, data)
       .then((res) => {
         actions.setSubmitting(false);
-        console.log(res);
         // si back retourne une erreur, l'afficher
         // TODO: gérer les erreurs
         if (res.status !== 200) {

@@ -31,7 +31,7 @@ const UploadImage = () => {
         accept='.jpg, .jpeg, .png'
         onChange={(e) => setImage(e.target.files[0])}
       />
-      {/* Afficher bouton validation uniquement si une novelle image choisie */}
+      {/* Afficher bouton validation uniquement si une nouvelle image choisie */}
       {image ? (
         <Button
           variant='primary'
