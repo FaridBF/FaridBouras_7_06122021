@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CommentsList from './CommentsList';
 import { date_options } from '../utils/date';
 // import Card from 'react-bootstrap/Card';
 
+import { deletePost } from '../actions/post.actions';
 // import CardComments from './CardComment';
 
 /**
@@ -17,15 +20,23 @@ import { date_options } from '../utils/date';
 const Post = (props) => {
   const currentPost = props.post;
   // const [showComments, setShowComments] = useState(false);
+  // récupérer infos de l'utilisateur depuis localstorage
+  const userInfo = JSON.parse(localStorage.getItem('user_details'));
+  const dispatch = useDispatch();
+
+  /**
+   * Supprime une publication
+   */
+  const handleDeletePost = () => {
+    dispatch(deletePost(currentPost.id));
+  };
 
   return (
     <>
-      {/* Première publication */}
       <Row>
         <Card>
           <Card.Body>
             <Row className='d-flex align-items-center'>
-              {/* <Card.Img variant='top' src='holder.js/100px180' /> */}
               <Col xs={2} md={1} lg={1}>
                 <img
                   src={currentPost.picture}
@@ -44,11 +55,36 @@ const Post = (props) => {
                   )}
                 </small>
               </Col>
+              {/* Début suppression publication */}
+              {userInfo.is_admin === 1 ||
+              userInfo.id === currentPost.user_id ? (
+                <Col className='d-flex justify-content-end'>
+                  <Button
+                    className='button_danger'
+                    variant='danger'
+                    onClick={() => {
+                      // demande de confirmation avant de supprimer
+                      if (
+                        window.confirm(
+                          'Êtes-vous certain(e) de vouloir supprimer cette publication ?'
+                        )
+                      ) {
+                        handleDeletePost();
+                      }
+                    }}
+                  >
+                    <FontAwesomeIcon icon='fa-solid fa-trash' />
+                  </Button>
+                </Col>
+              ) : (
+                ''
+              )}
+              {/* Fin suppression publication */}
             </Row>
             <Row className='publication-content'>
               <Card.Text>{currentPost.content}</Card.Text>
               {/* Début affichage image */}
-              {currentPost.image != undefined || currentPost.image != null ? (
+              {currentPost.image !== undefined || currentPost.image !== null ? (
                 <>
                   <img className='publication-image' src={currentPost.image} />
                 </>
@@ -84,7 +120,6 @@ const Post = (props) => {
           </Card.Body>
         </Card>
       </Row>
-      {/* Fin Première publication */}
       {/* {showComments && <CardComments post={Post} />} */}
     </>
   );

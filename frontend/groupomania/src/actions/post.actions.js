@@ -40,3 +40,21 @@ export const addPost = (data) => {
       .catch((err) => console.log(err));
   };
 };
+
+export const DELETE_POST = 'DELETE_POST';
+
+/**
+ * action qui supprime une publication et l'envoie au reducer
+ * le reducer va ensuite modifier l'état actuel du store
+ * @param  {postId} : représente l'id de la publication à envoyer au reducer pr màj le store
+ */
+export const deletePost = (postId) => {
+  return (dispatch) => {
+    return axios
+      .delete(`${process.env.REACT_APP_API_URL}api/post/${postId}`)
+      .then((res) => {
+        dispatch({ type: DELETE_POST, payload: { postId } });
+      })
+      .catch((err) => console.log(err));
+  };
+};
