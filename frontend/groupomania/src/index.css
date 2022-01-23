@@ -271,7 +271,23 @@ img.publication-image {
 }
 
 .publication-icons {
+  color: grey;
   padding: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.icon_add_comment:hover {
+  color: #fd34099c;
+  cursor: pointer;
+}
+
+.icon_thumbs_up:hover {
+  color: blue;
+  cursor: pointer;
+}
+.icon_thumbs_down:hover {
+  color: rgba(221, 21, 21, 0.747);
+  cursor: pointer;
 }
 
 .d-flex {

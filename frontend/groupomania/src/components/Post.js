@@ -20,6 +20,7 @@ import { deletePost, getTotalPostLikes } from '../actions/post.actions';
 const Post = (props) => {
   const currentPost = props.post;
   const [totalLikes, setTotalLikes] = useState(0);
+  const [totalDislikes, setTotalDislikes] = useState(0);
   // const [showComments, setShowComments] = useState(false);
   // récupérer infos de l'utilisateur depuis localstorage
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
@@ -55,9 +56,24 @@ const Post = (props) => {
       .catch((err) => console.log(err));
   };
 
+  /**
+   * Récupère le total de dislikes de la publication depuis le back
+   */
+  const getTotalDislikes = () => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}api/post/total-dislikes/${currentPost.id}`
+      )
+      .then((res) => {
+        setTotalDislikes(res.data.TotalDislikes);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     // handleTotalPostLikes();
     getTotalLikes();
+    getTotalDislikes();
   }, []);
 
   return (
@@ -149,6 +165,7 @@ const Post = (props) => {
                   className='icon_thumbs_down m-2'
                   icon='fa-solid fa-thumbs-down'
                 />
+                <small>{totalDislikes}</small>
               </Col>
             </Row>
             <CommentsList post_id={currentPost.id} />
