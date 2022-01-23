@@ -15,6 +15,7 @@ router.delete('/:id', auth, postCtrl.deletePost);
 
 //like and dislike
 router.get('/total-likes/:id', auth, postCtrl.getTotalLikesByPostId);
+router.get('/total-dislikes/:id', auth, postCtrl.getTotalDislikesByPostId);
 router.post('/opinion/:id', auth, postCtrl.giveOpinion);
 
 module.exports = router;

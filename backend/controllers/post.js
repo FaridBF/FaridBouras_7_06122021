@@ -155,7 +155,22 @@ exports.getTotalLikesByPostId = (req, res) => {
   });
 };
 
-// exports.getTotalDislikesByPostId = (req, res) => {};
+/**
+ * Récupération du total de "dislikes" pour un post via l'ID
+ * @param  {id} req : informations reçues par le front dans params
+ * @param  {} res : résultat envoyé au front
+ */
+exports.getTotalDislikesByPostId = (req, res) => {
+  const sql_query = `SELECT COUNT(*) AS TotalDislikes FROM user_post_opinion WHERE post_id=${req.params.id} AND type=-1;`;
+  const db = db_connection.getDB();
+  db.query(sql_query, (err, result) => {
+    if (!result) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+    } else {
+      res.status(200).json(result[0]);
+    }
+  });
+};
 
 /**
  * Gestion de l'opinion (like, dislike ou sans opinion) d'un utilisateur sur une publication
