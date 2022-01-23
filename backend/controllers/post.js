@@ -138,6 +138,26 @@ exports.updatePost = (req, res) => {
 };
 
 /**
+ * Récupération du total de "likes" pour un post via l'ID
+ * @param  {id} req : informations reçues par le front dans params
+ * @param  {} res : résultat envoyé au front
+ */
+exports.getTotalLikesByPostId = (req, res) => {
+  const sql_query = `SELECT COUNT(*) AS TotalLikes FROM user_post_opinion WHERE post_id=${req.params.id} AND type=1;`;
+  const db = db_connection.getDB();
+  db.query(sql_query, (err, result) => {
+    if (!result) {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+      //   throw err;
+    } else {
+      res.status(200).json(result[0]);
+    }
+  });
+};
+
+// exports.getTotalDislikesByPostId = (req, res) => {};
+
+/**
  * Gestion de l'opinion (like, dislike ou sans opinion) d'un utilisateur sur une publication
  * @param  {user_id, post_id, type} req : informations reçues par le front
  * Type: 0 = sans opinion, 1 = like, -1 = dislike
