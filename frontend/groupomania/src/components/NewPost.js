@@ -35,7 +35,7 @@ const NewPost = () => {
 
   /**
    * Gestion du submit d'une nouvelle publication
-   * @param  {} e: event
+   * @param  {e}: event
    */
   const handleSubmitPost = async (e) => {
     e.preventDefault();
