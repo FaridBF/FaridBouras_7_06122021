@@ -11,15 +11,20 @@ import { date_options } from '../utils/date';
 // import Card from 'react-bootstrap/Card';
 import { deletePost } from '../actions/post.actions';
 import NewComment from './NewComment';
+import Like from './Like';
+import Dislike from './Dislike';
+
 /**
  * Représente le composant d'une publication
  * @param  {} props: objet représentant une publication
  */
 const Post = (props) => {
   const currentPost = props.post;
-  const [totalLikes, setTotalLikes] = useState(0);
-  const [totalDislikes, setTotalDislikes] = useState(0);
   const [showComments, setShowComments] = useState(false);
+  const [totalLikes, setTotalLikes] = useState(0);
+  const [likersList, setLikersList] = useState([]); // list users qui ont liké ce post
+  const [totalDislikes, setTotalDislikes] = useState(0);
+  const [dislikersList, setDislikersList] = useState([]); // list users qui ont disliké ce post
   // récupérer infos de l'utilisateur depuis localstorage
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
   const dispatch = useDispatch();
@@ -41,7 +46,8 @@ const Post = (props) => {
   // };
 
   /**
-   * Récupère le total de likes de la publication depuis le back
+   * Récupère la liste des id des users qui ont liké cette publication
+   * et le total de likes de celle-ci depuis le back
    */
   const getTotalLikes = () => {
     axios
@@ -49,13 +55,15 @@ const Post = (props) => {
         `${process.env.REACT_APP_API_URL}api/post/total-likes/${currentPost.id}`
       )
       .then((res) => {
-        setTotalLikes(res.data.TotalLikes);
+        setTotalLikes(res.data.totalLikes);
+        setLikersList(res.data.likersList);
       })
       .catch((err) => console.log(err));
   };
 
   /**
-   * Récupère le total de dislikes de la publication depuis le back
+   * Récupère la liste des id des users qui ont disliké cette publication
+   * et le total de dislikes de celle-ci depuis le back
    */
   const getTotalDislikes = () => {
     axios
@@ -63,7 +71,8 @@ const Post = (props) => {
         `${process.env.REACT_APP_API_URL}api/post/total-dislikes/${currentPost.id}`
       )
       .then((res) => {
-        setTotalDislikes(res.data.TotalDislikes);
+        setTotalDislikes(res.data.totalDislikes);
+        setDislikersList(res.data.dislikersList);
       })
       .catch((err) => console.log(err));
   };
@@ -154,15 +163,9 @@ const Post = (props) => {
                   className='icon_add_comment m-2'
                   icon='fa-solid fa-message'
                 />
-                <FontAwesomeIcon
-                  className='icon_thumbs_up m-2'
-                  icon='fa-solid fa-thumbs-up'
-                />
+                <Like post={currentPost} likersList={likersList} />
                 <small>{totalLikes}</small>
-                <FontAwesomeIcon
-                  className='icon_thumbs_down m-2'
-                  icon='fa-solid fa-thumbs-down'
-                />
+                <Dislike post={currentPost} dislikersList={dislikersList} />
                 <small>{totalDislikes}</small>
               </Col>
             </Row>
