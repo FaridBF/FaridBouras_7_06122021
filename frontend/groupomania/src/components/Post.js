@@ -9,10 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CommentsList from './CommentsList';
 import { date_options } from '../utils/date';
 // import Card from 'react-bootstrap/Card';
-
-import { deletePost, getTotalPostLikes } from '../actions/post.actions';
-// import CardComments from './CardComment';
-
+import { deletePost } from '../actions/post.actions';
+import NewComment from './NewComment';
 /**
  * Représente le composant d'une publication
  * @param  {} props: objet représentant une publication
@@ -21,7 +19,7 @@ const Post = (props) => {
   const currentPost = props.post;
   const [totalLikes, setTotalLikes] = useState(0);
   const [totalDislikes, setTotalDislikes] = useState(0);
-  // const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState(false);
   // récupérer infos de l'utilisateur depuis localstorage
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
   const dispatch = useDispatch();
@@ -152,7 +150,7 @@ const Post = (props) => {
             <Row className='publication-icons'>
               <Col>
                 <FontAwesomeIcon
-                  // onClick={() => setShowComments(!showComments)}
+                  onClick={() => setShowComments(!showComments)}
                   className='icon_add_comment m-2'
                   icon='fa-solid fa-message'
                 />
@@ -169,10 +167,10 @@ const Post = (props) => {
               </Col>
             </Row>
             <CommentsList post_id={currentPost.id} />
+            {showComments ? <NewComment post={currentPost} /> : ''}
           </Card.Body>
         </Card>
       </Row>
-      {/* {showComments && <CardComments post={Post} />} */}
     </>
   );
 };
