@@ -140,17 +140,18 @@ exports.updatePost = (req, res) => {
 /**
  * Récupération du total de "likes" pour un post via l'ID
  * @param  {id} req : informations reçues par le front dans params
- * @param  {} res : résultat envoyé au front
+ * @param  {likersList, totalLikes} res : résultat envoyé au front
  */
 exports.getTotalLikesByPostId = (req, res) => {
-  const sql_query = `SELECT COUNT(*) AS TotalLikes FROM user_post_opinion WHERE post_id=${req.params.id} AND type=1;`;
+  const sql_query = `SELECT user_id FROM user_post_opinion WHERE post_id=${req.params.id} AND type=1;`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     if (!result) {
       res.status(400).json({ message: 'Une erreur est survenue.' });
       //   throw err;
     } else {
-      res.status(200).json(result[0]);
+      // envoie au front la liste des likers et le total des likers
+      res.status(200).json({ likersList: result, totalLikes: result.length });
     }
   });
 };
@@ -158,16 +159,19 @@ exports.getTotalLikesByPostId = (req, res) => {
 /**
  * Récupération du total de "dislikes" pour un post via l'ID
  * @param  {id} req : informations reçues par le front dans params
- * @param  {} res : résultat envoyé au front
+ * @param  {dislikersList, totalDislikes} res : résultat envoyé au front
  */
 exports.getTotalDislikesByPostId = (req, res) => {
-  const sql_query = `SELECT COUNT(*) AS TotalDislikes FROM user_post_opinion WHERE post_id=${req.params.id} AND type=-1;`;
+  const sql_query = `SELECT user_id FROM user_post_opinion WHERE post_id=${req.params.id} AND type=-1;`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     if (!result) {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
-      res.status(200).json(result[0]);
+      // envoie au front la liste des dislikers et le total des dislikers
+      res
+        .status(200)
+        .json({ dislikersList: result, totalDislikes: result.length });
     }
   });
 };
