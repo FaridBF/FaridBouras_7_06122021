@@ -281,13 +281,34 @@ img.publication-image {
   cursor: pointer;
 }
 
+/* icône like */
 .icon_thumbs_up:hover {
   color: blue;
   cursor: pointer;
 }
+
+.icon_thumbs_up_liked {
+  color: blue;
+}
+
+.icon_thumbs_up_liked:hover {
+  cursor: pointer;
+  color: grey;
+}
+
+/* icône dislike */
 .icon_thumbs_down:hover {
   color: rgba(221, 21, 21, 0.747);
   cursor: pointer;
+}
+
+.icon_thumbs_down_disliked {
+  color: rgba(221, 21, 21, 0.747);
+}
+
+.icon_thumbs_down_disliked:hover {
+  cursor: pointer;
+  color: grey;
 }
 
 .d-flex {
