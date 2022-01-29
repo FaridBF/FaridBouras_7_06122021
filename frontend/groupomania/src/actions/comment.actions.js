@@ -62,20 +62,20 @@ export const getComments = (postId) => {
 //   };
 // };
 
-// export const DELETE_COMMENT = 'DELETE_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
 
-// /**
-//  * action qui supprime une publication et l'envoie au reducer
-//  * le reducer va ensuite modifier l'état actuel du store
-//  * @param  {postId} : représente l'id de la publication à envoyer au reducer pr màj le store
-//  */
-// export const deleteComment = (postId) => {
-//   return (dispatch) => {
-//     return axios
-//       .delete(`${process.env.REACT_APP_API_URL}api/comment/${postId}`)
-//       .then((res) => {
-//         dispatch({ type: DELETE_COMMENT, payload: { postId } });
-//       })
-//       .catch((err) => console.log(err));
-//   };
-// };
+/**
+ * action qui supprime un commentaire et l'envoie au reducer
+ * le reducer va ensuite modifier l'état actuel du store
+ * @param  {postId} : représente l'id du commentaire à envoyer au reducer pr màj le store
+ */
+export const deleteComment = (commentId) => {
+  return (dispatch) => {
+    return axios
+      .delete(`${process.env.REACT_APP_API_URL}api/comment/${commentId}`)
+      .then((res) => {
+        dispatch({ type: DELETE_COMMENT, payload: { commentId } });
+      })
+      .catch((err) => console.log(err));
+  };
+};

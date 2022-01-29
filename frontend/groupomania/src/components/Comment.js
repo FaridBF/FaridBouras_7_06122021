@@ -11,15 +11,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { date_options } from '../utils/date';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getCommentDetails } from '../actions/comment.actions';
+import {
+  getComments,
+  getCommentDetails,
+  deleteComment
+} from '../actions/comment.actions';
 
 /**
  * Représente le composant d'un commentaire
  * @param  {} props: objet représentant un commentaire
  */
 const Comment = (props) => {
+  // récupérer infos de l'utilisateur connecté
+  const userInfo = JSON.parse(localStorage.getItem('user_details'));
   // récupérer id de commentaire fourni en propriété par composant parent : CommentsList
-  const currentCommentId = props.comment.id;
   // const [currentComment, setCurrentComment] = useState({});
   const currentComment = props.comment;
   const dispatch = useDispatch(); // pr envoyer une action
@@ -41,6 +46,19 @@ const Comment = (props) => {
   // useEffect(() => {
   // getCommentById();
   // }, []); // tableau vide car on veut que cela ne se déclenche qu'à l'affichage du composant
+
+  /**
+   * Supprime un commentaire
+   */
+  // const handleDeleteComment = async () => {
+  //   await dispatch(deleteComment(currentComment.id));
+  //   document.location.reload(); // TODO: remplacer cette solution de secours
+  // };
+  const handleDeleteComment = () => {
+    dispatch(deleteComment(currentComment.id));
+    document.location.reload(); // TODO: remplacer cette solution de secours
+    // dispatch(getComments(currentComment.post_id));
+  };
 
   return (
     <>
@@ -68,11 +86,36 @@ const Comment = (props) => {
                   </p>
                   <p className='mb-0'>{currentComment.content}</p>
                 </Col>
-                <Col>
+                {/* Début suppression commentaire */}
+                {userInfo.is_admin === 1 ||
+                userInfo.id === currentComment.author_id ? (
+                  <Col className='d-flex justify-content-end'>
+                    <Button
+                      className='button_danger'
+                      variant='danger'
+                      onClick={() => {
+                        // demande de confirmation avant de supprimer
+                        if (
+                          window.confirm(
+                            'Êtes-vous certain(e) de vouloir supprimer ce commentaire ?'
+                          )
+                        ) {
+                          handleDeleteComment();
+                        }
+                      }}
+                    >
+                      <FontAwesomeIcon icon='fa-solid fa-trash' />
+                    </Button>
+                  </Col>
+                ) : (
+                  ''
+                )}
+                {/* Fin suppression commentaire */}
+                {/* <Col>
                   <Button className='button_danger' variant='danger'>
                     <FontAwesomeIcon icon='fa-solid fa-trash' />
                   </Button>
-                </Col>
+                </Col> */}
               </Row>
             </Card.Body>
           </Card>
