@@ -165,7 +165,11 @@ const Post = (props) => {
                   className='icon_add_comment m-2'
                   icon='fa-solid fa-message'
                 />
-                <Like post={currentPost} likersList={likersList} />
+                <Like
+                  post={currentPost}
+                  likersList={likersList}
+                  getTotalLikes={getTotalLikes} // fonction
+                />
                 <small>{totalLikes}</small>
                 <Dislike post={currentPost} dislikersList={dislikersList} />
                 <small>{totalDislikes}</small>
