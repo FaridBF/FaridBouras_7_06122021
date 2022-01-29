@@ -34,7 +34,7 @@ const NewComment = (props) => {
       await dispatch(addComment(data));
       dispatch(getComments(props.post.id));
       setCommentContent('');
-      document.location.reload(); // solution de secours
+      document.location.reload(); // TODO: remplacer cette solution de secours
       // dispatch(getPosts(5)); ne fonctionn pas
       //   .then(() => dispatch(getPosts()))
       //   // .then(() => dispatch(getComments()))

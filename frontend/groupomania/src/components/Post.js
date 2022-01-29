@@ -25,7 +25,7 @@ const Post = (props) => {
   const [likersList, setLikersList] = useState([]); // list users qui ont liké ce post
   const [totalDislikes, setTotalDislikes] = useState(0);
   const [dislikersList, setDislikersList] = useState([]); // list users qui ont disliké ce post
-  // récupérer infos de l'utilisateur depuis localstorage
+  // récupérer infos de l'utilisateur connecté (depuis localstorage)
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
   const dispatch = useDispatch();
   // const likes = useSelector((state) => state.postReducer); // récupérer likes du store
