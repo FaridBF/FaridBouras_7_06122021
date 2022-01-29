@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -29,6 +29,7 @@ const Post = (props) => {
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
   const dispatch = useDispatch();
   // const likes = useSelector((state) => state.postReducer); // récupérer likes du store
+  // const comments = useSelector((state) => state.commentReducer);
 
   /**
    * Supprime une publication
@@ -156,6 +157,7 @@ const Post = (props) => {
               )}
               {/* Fin affichage lien */}
             </Row>
+            {/* Début réactions à la publication */}
             <Row className='publication-icons'>
               <Col>
                 <FontAwesomeIcon
@@ -169,8 +171,9 @@ const Post = (props) => {
                 <small>{totalDislikes}</small>
               </Col>
             </Row>
-            <CommentsList post_id={currentPost.id} />
             {showComments ? <NewComment post={currentPost} /> : ''}
+            <CommentsList post_id={currentPost.id} />
+            {/* Fin réactions à la publication */}
           </Card.Body>
         </Card>
       </Row>

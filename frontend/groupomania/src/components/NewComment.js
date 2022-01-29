@@ -4,9 +4,9 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
-import { addComment } from '../actions/comment.action';
+import { addComment, getComments } from '../actions/comment.actions';
+import { getPosts } from '../actions/post.actions';
 
 /**
  * Représente le formulaire d'un nouveau commentaire
@@ -25,15 +25,20 @@ const NewComment = (props) => {
   const handleSubmitComment = async (e) => {
     e.preventDefault();
     if (commentContent.length > 0) {
-      // objet représentant un commentaire
+      // objet représentant un nouveau commentaire
       const data = {
         user_id: userInfo.id,
         content: commentContent,
         post_id: props.post.id
       };
       await dispatch(addComment(data));
-      // resetNewCommentInputs();
-      setCommentContent(''); // reset l'input de content
+      dispatch(getComments(props.post.id));
+      setCommentContent('');
+      document.location.reload(); // solution de secours
+      // dispatch(getPosts(5)); ne fonctionn pas
+      //   .then(() => dispatch(getPosts()))
+      //   // .then(() => dispatch(getComments()))
+      //   .then(() => setCommentContent('')); // reset l'input de content
     }
   };
 
@@ -44,29 +49,23 @@ const NewComment = (props) => {
           <Card.Body>
             <Row className='d-flex align-items-center'>
               <Form onSubmit={handleSubmitComment}>
-                <FloatingLabel
-                  controlId='floatingTextarea'
-                  label='Entrez votre commentaire'
-                  className='mb-2 mt-3 d-flex'
+                <Form.Control
+                  className='new-publication'
+                  as='textarea'
+                  placeholder='Un commentaire à laisser ?'
+                  value={commentContent}
+                  onChange={(e) => {
+                    setCommentContent(e.target.value);
+                  }}
+                />
+                <Button
+                  variant='primary'
+                  type='submit'
+                  aria-describedby='Publier'
+                  disabled={commentContent.length === 0}
                 >
-                  <Form.Control
-                    className='new-publication'
-                    as='textarea'
-                    placeholder='Leave a comment here'
-                    value={commentContent}
-                    onChange={(e) => {
-                      setCommentContent(e.target.value);
-                    }}
-                  />
-                  <Button
-                    variant='primary'
-                    type='submit'
-                    aria-describedby='Publier'
-                    disabled={commentContent.length === 0}
-                  >
-                    Publier
-                  </Button>
-                </FloatingLabel>
+                  Publier
+                </Button>
               </Form>
             </Row>
           </Card.Body>
