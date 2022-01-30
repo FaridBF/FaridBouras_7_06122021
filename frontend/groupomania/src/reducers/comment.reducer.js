@@ -15,7 +15,8 @@ const initialState = {};
 export default function commentReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_COMMENTS:
-      return [action.payload, ...state];
+      // retourne state mis à jour (state précédent + nveau commentaire)
+      return (state = [...state, action.payload]);
     case GET_COMMENTS:
       // return [action.payload, ...state];
       return action.payload;

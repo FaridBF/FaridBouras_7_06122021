@@ -31,10 +31,14 @@ const NewComment = (props) => {
         content: commentContent,
         post_id: props.post.id
       };
-      await dispatch(addComment(data));
-      dispatch(getComments(props.post.id));
-      setCommentContent('');
-      document.location.reload(); // TODO: remplacer cette solution de secours
+      // secours: envoyer à CommentsList le nouveau commentaire
+      // console.log('commentContent', commentContent);
+      // envoyer nouveau commentaire au composant parent (Post)
+      props.setNouveauCommentaireContenu(commentContent);
+      await dispatch(addComment(data)); // ajouter commentaire via redux
+      dispatch(getComments(props.post.id)); // récup liste commentaires via redux
+      setCommentContent(''); // vider input
+      // document.location.reload(); // TODO: remplacer cette solution de secours
       // dispatch(getPosts(5)); ne fonctionn pas
       //   .then(() => dispatch(getPosts()))
       //   // .then(() => dispatch(getComments()))
