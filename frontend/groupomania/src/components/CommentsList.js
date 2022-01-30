@@ -80,7 +80,13 @@ const CommentsList = (props) => {
     <>
       {!isEmpty(comments[0]) &&
         comments.map((comment) => {
-          return <Comment comment={comment} key={comment.id} />;
+          return (
+            <Comment
+              comment={comment}
+              key={comment.id}
+              getCommentsList={getCommentsList}
+            />
+          );
         })}
     </>
   );
