@@ -1,62 +1,36 @@
 import React, { useState, useEffect } from 'react';
-// import axios from '../api';
-import axios from 'axios';
+// import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { date_options } from '../utils/date';
 
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getComments,
-  getCommentDetails,
-  deleteComment
-} from '../actions/comment.actions';
+import { deleteComment } from '../actions/comment.actions';
 
 /**
  * Représente le composant d'un commentaire
- * @param  {} props: objet représentant un commentaire
+ * @param {comment} props: objet représentant un commentaire
+ * @param {getCommentsList} props: fonction du composant parent (CommentsList) qui appelle l'API pr récup liste commentaires
  */
 const Comment = (props) => {
   // récupérer infos de l'utilisateur connecté
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
   // récupérer id de commentaire fourni en propriété par composant parent : CommentsList
-  // const [currentComment, setCurrentComment] = useState({});
   const currentComment = props.comment;
   const dispatch = useDispatch(); // pr envoyer une action
   // const currentComment = useSelector((state) => state.commentReducer);
 
   /**
-   * Requête à l'api pour récupérer un commentaire par son id et des infos de l'auteur
-   */
-  // const getCommentById = () => {
-  //   await axios
-  //     .get(`${process.env.REACT_APP_API_URL}api/comment/${currentCommentId}`)
-  //     .then((res) => {
-  //       setCurrentComment(res.data);
-  //     });
-  //
-  // dispatch(getCommentDetails(currentCommentId));
-  // };
-
-  // useEffect(() => {
-  // getCommentById();
-  // }, []); // tableau vide car on veut que cela ne se déclenche qu'à l'affichage du composant
-
-  /**
    * Supprime un commentaire
    */
-  // const handleDeleteComment = async () => {
-  //   await dispatch(deleteComment(currentComment.id));
-  //   document.location.reload(); // TODO: remplacer cette solution de secours
-  // };
-  const handleDeleteComment = () => {
-    dispatch(deleteComment(currentComment.id));
-    document.location.reload(); // TODO: remplacer cette solution de secours
+  const handleDeleteComment = async () => {
+    await dispatch(deleteComment(currentComment.id));
+    // document.location.reload(); // TODO: remplacer cette solution de secours
+    // appeler la fonction du composant parent (CommentsList) qui appelle l'API pr récup liste commentaires
+    props.getCommentsList();
     // dispatch(getComments(currentComment.post_id));
   };
 
@@ -111,11 +85,6 @@ const Comment = (props) => {
                   ''
                 )}
                 {/* Fin suppression commentaire */}
-                {/* <Col>
-                  <Button className='button_danger' variant='danger'>
-                    <FontAwesomeIcon icon='fa-solid fa-trash' />
-                  </Button>
-                </Col> */}
               </Row>
             </Card.Body>
           </Card>
