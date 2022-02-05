@@ -214,21 +214,39 @@ exports.deleteUser = (req, res) => {
 };
 
 /**
- * Permet de modifier les droits admin d'un User
- * @param  {id, is_admin} req : informations reçues par le front (id du user dans params)
+ * Permet de modifier les droits admin d'un User quand on est admin
+ * @param  {id} : informations reçues par le front (id du user qui appelle la requête dans params)
+ * @param  {id, is_admin} req.body : informations reçues par le front concernant le user à modifier
  * @param  {code, message} res : réponse envoyée du back vers le front
  */
 exports.setAdminUser = (req, res) => {
   const userToAdmin = {
     ...req.body
   };
-  const sql_query = `UPDATE user SET is_admin = "${userToAdmin.is_admin}", update_time = NOW() WHERE id = "${req.params.id}";`;
+
+  const sql_query_verify = `SELECT id, is_admin FROM user WHERE id = "${req.params.id}";`;
+  const sql_query_update_admin = `UPDATE user SET is_admin = "${userToAdmin.is_admin}", update_time = NOW() WHERE id = "${userToAdmin.id}";`;
   const db = db_connection.getDB();
-  db.query(sql_query, (err, result) => {
-    if (!result) {
-      res.status(400).json({ message: 'Une erreur est survenue.' });
+  db.query(sql_query_verify, (err, result) => {
+    // Vérifier si le user qui fait la demande est un admin
+    if (result[0].is_admin === 1) {
+      // Si le user qui fait la demande est un admin, continuer
+      db.query(sql_query_update_admin, (err, result) => {
+        // console.log('result set admin', result);
+        if (result) {
+          res.status(200).json({
+            message: `Les droits du user ${userToAdmin.id} ont été modifiés !`
+          });
+        } else {
+          res.status(400).json({ message: 'Une erreur est survenue set.' });
+        }
+      });
+    } else if (result[0].is_admin === 0) {
+      res.status(401).json({
+        message: "Vous n'avez pas les droits pour réaliser cette action."
+      });
     } else {
-      res.status(200).json({ message: 'Vos droits ont été modifiés !' });
+      res.status(400).json({ message: 'Une erreur est survenue.' });
     }
   });
 };
