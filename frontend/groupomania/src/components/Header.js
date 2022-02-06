@@ -34,7 +34,7 @@ const Header = () => {
     <Container className='header-container' fluid>
       <Row>
         <Col xs={12} md={3} lg={3}>
-          <Link to='/home'>
+          <Link to={userInfo ? '/home' : '/signup'}>
             <img
               src={Logo}
               className='img-fluid'
