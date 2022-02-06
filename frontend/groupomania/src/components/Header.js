@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 import Button from 'react-bootstrap/Button';
@@ -17,6 +17,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Header = () => {
   // récupérer infos de l'utilisateur depuis localstorage
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
+  // récupérer chemin de l'URL en cours pour savoir sur quelle route on est côté front
+  const location = useLocation();
+  const currentURLPathname = location.pathname;
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -71,17 +74,22 @@ const Header = () => {
                 />
               </Button>
             </>
+          ) : currentURLPathname !== '/login' ? (
+            // si on est ailleurs que sur login sans user connecté
+            <>
+              <Link to='/login'>
+                <Button
+                  aria-label='Connexion'
+                  variant='secondary'
+                  size='lg'
+                  active
+                >
+                  Connexion
+                </Button>
+              </Link>
+            </>
           ) : (
-            <Link to='/login'>
-              <Button
-                aria-label='Connexion'
-                variant='secondary'
-                size='lg'
-                active
-              >
-                Connexion
-              </Button>
-            </Link>
+            ''
           )}
           {/* Fin gestion des boutons connexion/déconnexion */}
         </Col>
