@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
+import { Link } from 'react-router-dom';
 
 import Header from './Header';
 import Footer from './Footer';
@@ -33,7 +34,7 @@ const Profile = () => {
   return (
     <>
       <Header />
-      <Container className='main-container d-flex justify-content-center'>
+      <Container className='profile-main-container'>
         <Row className='profile-container'>
           <Col className='picture-container' xs={12} md={12} lg={4}>
             <img
@@ -62,16 +63,29 @@ const Profile = () => {
               Email:{' '}
               <span className='style-text-container'> {userInfo.email}</span>
             </p>
-            {/* Début phrase pour les utilisateurs admin */}
+
+            {/* Début phrase + bouton pour les utilisateurs admin */}
             {userInfo.is_admin === 1 ? (
-              <p title='Un compte admin permet de modérer des comptes, publications et commentaires.'>
-                <small>Vous disposez d'un compte admin </small>
-                <FontAwesomeIcon icon='fa-solid fa-circle-info' />
-              </p>
+              <>
+                <p title='Un compte admin permet de modérer des comptes, publications et commentaires.'>
+                  <small>Vous disposez d'un compte admin </small>
+                  <FontAwesomeIcon icon='fa-solid fa-circle-info' />
+                </p>
+                <Link to='/admin'>
+                  <Button
+                    variant='outline-primary'
+                    type='submit'
+                    aria-describedby='Suppression'
+                  >
+                    Gestion des droits admin
+                  </Button>
+                </Link>
+              </>
             ) : (
               ''
             )}
-            {/* Fin phrase pour les utilisateurs admin */}
+            {/* Fin phrase + bouton pour les utilisateurs admin */}
+
             <Button
               variant='outline-danger'
               type='submit'
