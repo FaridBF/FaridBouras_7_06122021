@@ -16,7 +16,8 @@ router.post('/upload/:id', auth, multer, userCtrl.updateUserImage);
 router.delete('/:id', auth, userCtrl.deleteUser);
 
 // paramètrage des droits (admin) d'un user
-router.put('/:id/adminrights', auth, userCtrl.setAdminUser);
+router.post('/admin-rights', auth, userCtrl.getUserRightsByEmail);
+router.put('/:id/admin-rights', auth, userCtrl.setAdminUser);
 
 // affichage de l'ensemble des données du User sans le mot de passe
 router.get('/:id', auth, userCtrl.getUserDetails);

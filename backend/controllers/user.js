@@ -113,6 +113,63 @@ exports.getUserDetails = (req, res) => {
   });
 };
 
+// TODO: faire commentaire
+exports.getUserRightsByEmail = (req, res) => {
+  const sql_query = `SELECT id, email, is_admin FROM user WHERE email = "${req.body.email}";`;
+  const db = db_connection.getDB();
+  db.query(sql_query, (err, result) => {
+    console.log(result);
+    if (result.length > 0) {
+      res.status(200).json(result[0]);
+    } else if (result.length === 0) {
+      res.status(204).json({
+        message:
+          'Aucun utilisateur trouvé avec cette adresse email. Veuillez réessayer.'
+      });
+    } else {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+    }
+  });
+};
+
+/**
+ * Permet de modifier les droits admin d'un User quand on est admin
+ * @param  {id} : informations reçues par le front (id du user qui appelle la requête dans params)
+ * @param  {id, is_admin} req.body : informations reçues par le front concernant le user à modifier
+ * @param  {code, message} res : réponse envoyée du back vers le front
+ */
+exports.setAdminUser = (req, res) => {
+  const userToAdmin = {
+    ...req.body
+  };
+
+  const sql_query_verify = `SELECT id, is_admin FROM user WHERE id = "${req.params.id}";`;
+  const sql_query_update_admin = `UPDATE user SET is_admin = "${userToAdmin.is_admin}", update_time = NOW() WHERE id = "${userToAdmin.id}";`;
+  const db = db_connection.getDB();
+  db.query(sql_query_verify, (err, result) => {
+    // Vérifier si le user qui fait la demande est un admin
+    if (result[0].is_admin === 1) {
+      // Si le user qui fait la demande est un admin, continuer
+      db.query(sql_query_update_admin, (err, result) => {
+        console.log('result set admin', result);
+        if (result) {
+          res.status(200).json({
+            message: `Les droits de l'utilisateur lié à l'adresse email "${userToAdmin.email}" ont été modifiés !`
+          });
+        } else {
+          res.status(400).json({ message: 'Une erreur est survenue set.' });
+        }
+      });
+    } else if (result[0].is_admin === 0) {
+      res.status(401).json({
+        message: "Vous n'avez pas les droits pour réaliser cette action."
+      });
+    } else {
+      res.status(400).json({ message: 'Une erreur est survenue.' });
+    }
+  });
+};
+
 /**
  * Modification d'un User
  * @param  {id, first_name, last_name} req : informations reçues par le front (id du user dans params)
@@ -209,44 +266,6 @@ exports.deleteUser = (req, res) => {
       res
         .status(201)
         .json({ message: "L'utilisateur a bien été supprimé avec succès !" });
-    }
-  });
-};
-
-/**
- * Permet de modifier les droits admin d'un User quand on est admin
- * @param  {id} : informations reçues par le front (id du user qui appelle la requête dans params)
- * @param  {id, is_admin} req.body : informations reçues par le front concernant le user à modifier
- * @param  {code, message} res : réponse envoyée du back vers le front
- */
-exports.setAdminUser = (req, res) => {
-  const userToAdmin = {
-    ...req.body
-  };
-
-  const sql_query_verify = `SELECT id, is_admin FROM user WHERE id = "${req.params.id}";`;
-  const sql_query_update_admin = `UPDATE user SET is_admin = "${userToAdmin.is_admin}", update_time = NOW() WHERE id = "${userToAdmin.id}";`;
-  const db = db_connection.getDB();
-  db.query(sql_query_verify, (err, result) => {
-    // Vérifier si le user qui fait la demande est un admin
-    if (result[0].is_admin === 1) {
-      // Si le user qui fait la demande est un admin, continuer
-      db.query(sql_query_update_admin, (err, result) => {
-        // console.log('result set admin', result);
-        if (result) {
-          res.status(200).json({
-            message: `Les droits du user ${userToAdmin.id} ont été modifiés !`
-          });
-        } else {
-          res.status(400).json({ message: 'Une erreur est survenue set.' });
-        }
-      });
-    } else if (result[0].is_admin === 0) {
-      res.status(401).json({
-        message: "Vous n'avez pas les droits pour réaliser cette action."
-      });
-    } else {
-      res.status(400).json({ message: 'Une erreur est survenue.' });
     }
   });
 };
