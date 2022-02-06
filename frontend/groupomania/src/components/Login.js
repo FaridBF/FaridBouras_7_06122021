@@ -36,23 +36,23 @@ const Login = () => {
       .post(`${process.env.REACT_APP_API_URL}api/user/login`, data)
       .then((res) => {
         actions.setSubmitting(false);
-        // si back retourne une erreur, l'afficher
-        // TODO: gérer les erreurs
-        if (res.status !== 200) {
-          alert(res.data.error);
-        } else {
+        if (res.status === 200) {
           // si tt est ok, récupérer le userId du résultat de la req et
           dispatch(getUser(res.data.userId));
-          // et rediriger sur page home (TODO: voir comment conserver le store car actuellement on perd la data)
           alert('Vous êtes connecté(e) !');
           // redirection vers la page 'home'
           window.location = '/home';
+        } else if (res.status === 204) {
+          alert('Email incorrect !');
         }
       })
       // erreur pendant requête axios
       .catch((err) => {
-        alert("Impossible d'accéder au serveur");
-        console.log(err);
+        if (err.response.status === 401) {
+          alert('Mot de passe incorrect !');
+        } else {
+          alert('Un problème est survenu.');
+        }
       });
     // empêcher la multiple soumission du form et le vider
     actions.setSubmitting(false);

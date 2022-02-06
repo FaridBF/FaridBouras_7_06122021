@@ -69,7 +69,7 @@ exports.login = (req, res) => {
     if (!result) {
       res.status(400).json({ error: 'Une erreur est survenue' });
     } else if (result.length === 0) {
-      res.status(400).json({ error: 'Email incorrect !' });
+      res.status(204).json({ message: 'Email incorrect !' });
     } else {
       // si utilisateur trouvé en BDD, récupérer données suivantes
       const userFound = {
@@ -264,7 +264,7 @@ exports.deleteUser = (req, res) => {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
       res
-        .status(201)
+        .status(200)
         .json({ message: "L'utilisateur a bien été supprimé avec succès !" });
     }
   });
