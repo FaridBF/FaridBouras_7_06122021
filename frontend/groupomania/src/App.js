@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Home from './components/Home';
 import Profile from './components/Profile';
+import Admin from './components/Admin';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +24,7 @@ const App = () => {
             <Route path='/signup' component={Signup} />
             <Route path='/home' component={Home} />
             <Route path='/profile' component={Profile} />
+            <Route path='/admin' component={Admin} />
           </Switch>
         </Router>
       </div>
