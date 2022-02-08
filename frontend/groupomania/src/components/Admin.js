@@ -24,7 +24,7 @@ const Admin = () => {
   const [showUserFound, setShowUserFound] = useState(false);
 
   /**
-   * Requête au back pour récupérer user par email avec ses droits
+   * Requête au back pour récupérer user email avec ses droits grâce à l'email
    */
   const getUserByEmail = async () => {
     // vider l'affichage de l'ancien au cas où il y avait déjà un utilisateur recherché
@@ -59,16 +59,20 @@ const Admin = () => {
     setShowUserFound(false);
   };
 
-  // TODO: commenter
+  /**
+   * Requête au back pour changer les droits 'admin' d'un user
+   * - envoyer au back un objet 'userToChangeRights' représentant le user que l'on veut modifier (id, email, is_admin)
+   * @param  {} e
+   */
   const setAdminRights = async (e) => {
     e.preventDefault();
+    // récupérer depuis le radio button sélectionné représente droit admin (0 ou 1)
     const adminRights = e.target.elements.adminRights.value;
     const userToChangeRights = {
       id: userFound.id,
       email: userFound.email,
       is_admin: adminRights
     };
-    console.log(userToChangeRights);
     // envoie de la requête back pr changer droits
     await axios
       .put(
@@ -91,68 +95,88 @@ const Admin = () => {
   return (
     <>
       <Header />
-      <Container>
-        <Row className='admin-container'>
-          <h1>Gestion des droits utilisateurs</h1>
-          {/* TODO: améliorer */}
-          <p>Phrase explicative............</p>
-          <InputGroup className='mb-3'>
-            <FormControl
-              placeholder='Entrez une adresse email'
-              aria-label='Entrez une adresse email'
-              aria-describedby='Entrez une adresse email'
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-            />
-            <Button
-              variant='secondary'
-              id='button-addon2'
-              onClick={getUserByEmail}
-            >
-              Rechercher
-            </Button>
-          </InputGroup>
-          {showUserFound ? (
-            <>
-              {/* Affichage résultat de la recherche */}
-              <p>
-                Gérer les droits 'admin' pour cet utilisateur :{' '}
-                {userFound.email}
-              </p>
-              <Form onSubmit={setAdminRights}>
-                <Form.Check
-                  inline
-                  type='radio'
-                  label='activé'
-                  id='rights-activé'
-                  name='adminRights'
-                  value={1}
-                  defaultChecked={userFound.is_admin === 1}
-                />
-                <Form.Check
-                  inline
-                  type='radio'
-                  label='désactivé'
-                  id='rights-désactivé'
-                  name='adminRights'
-                  value={0}
-                  defaultChecked={userFound.is_admin === 0}
-                />
-                <Button
-                  variant='outline-primary'
-                  id='button-addon2'
-                  type='submit'
-                >
-                  Valider
-                </Button>
-              </Form>
-              {/* Fin affichage résultat de la recherche */}
-            </>
-          ) : (
-            ''
-          )}
-        </Row>
-      </Container>
+      {userInfo ? (
+        <Container className='position-admin-container'>
+          <Row className='admin-container'>
+            <h1 className='style-admin-h1'>Gestion des droits utilisateurs</h1>
+            {/* TODO: améliorer */}
+            <p className='style-admin-p'>
+              Recherchez l'utilisateur via son adresse email pour lequel vous
+              souhaitez modifier les droits administrateur.
+            </p>
+            <InputGroup className='mb-3'>
+              <FormControl
+                placeholder='Entrez une adresse email'
+                aria-label='Entrez une adresse email'
+                aria-describedby='Entrez une adresse email'
+                type='email'
+                value={emailInput}
+                onChange={(e) => setEmailInput(e.target.value)}
+              />
+              <Button
+                variant='secondary'
+                id='button-addon2'
+                onClick={getUserByEmail}
+              >
+                Rechercher
+              </Button>
+            </InputGroup>
+            {showUserFound ? (
+              <>
+                {/* Affichage résultat de la recherche */}
+                <p className='checkbox-admin'>
+                  Gérer les droits administrateur pour l'utilisateur suivant :
+                  <span className='style-text-container'>
+                    {' '}
+                    {userFound.email}
+                  </span>
+                </p>
+                <Form onSubmit={setAdminRights}>
+                  <Form.Check
+                    inline
+                    type='radio'
+                    className='checkbox-admin'
+                    label='activé'
+                    id='rights-activé'
+                    name='adminRights'
+                    value={1}
+                    defaultChecked={userFound.is_admin === 1}
+                  />
+                  <Form.Check
+                    inline
+                    type='radio'
+                    className='checkbox-admin'
+                    label='désactivé'
+                    id='rights-désactivé'
+                    name='adminRights'
+                    value={0}
+                    defaultChecked={userFound.is_admin === 0}
+                  />
+                  <Button
+                    variant='outline-primary'
+                    id='button-addon2'
+                    type='submit'
+                  >
+                    Valider
+                  </Button>
+                </Form>
+                {/* Fin affichage résultat de la recherche */}
+              </>
+            ) : (
+              ''
+            )}
+          </Row>
+        </Container>
+      ) : (
+        <Container className='admin-access-container'>
+          <Row className='admin-container'>
+            <p>
+              Il est nécéssaire de disposer d'un compte 'admin' afin de pouvoir
+              accéder à cette page.
+            </p>
+          </Row>
+        </Container>
+      )}
       <Footer />
     </>
   );
