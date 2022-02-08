@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
@@ -15,15 +15,25 @@ const Dislike = (props) => {
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
 
   /**
+   * Changer opinion en dislike
+   */
+  const changeOpinion = () => {
+    // indique à Post (composant parent) que user connecté a disliké ce post
+    props.setDisliked(true);
+    // et que like ne doit plus être bleu si c'était le cas
+    props.setLiked(false);
+  };
+
+  /**
    * Ajouter dislike
    */
-  const addDisLike = () => {
+  const addDisLike = async () => {
     const data = {
       user_id: userInfo.id,
       post_id: currentPost.id,
       type: -1
     };
-    axios
+    await axios
       .post(
         `${process.env.REACT_APP_API_URL}api/post/opinion/${currentPost.id}`,
         data
@@ -31,8 +41,7 @@ const Dislike = (props) => {
       .then((res) => {
         // si ok
         if (res.status === 201) {
-          // indiqué à Post (composant parent) que user connecté a disliké ce post
-          props.setDisliked(true);
+          changeOpinion();
         }
       })
       .catch((err) => console.log(err));
@@ -41,13 +50,13 @@ const Dislike = (props) => {
   /**
    * Retirer dislike
    */
-  const unDislike = () => {
+  const unDislike = async () => {
     const data = {
       user_id: userInfo.id,
       post_id: currentPost.id,
       type: 0
     };
-    axios
+    await axios
       .post(
         `${process.env.REACT_APP_API_URL}api/post/opinion/${currentPost.id}`,
         data
