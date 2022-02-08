@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CommentsList from './CommentsList';
 import { date_options } from '../utils/date';
-// import Card from 'react-bootstrap/Card';
 import { deletePost } from '../actions/post.actions';
 import NewComment from './NewComment';
 import Like from './Like';
@@ -21,15 +20,43 @@ import Dislike from './Dislike';
 const Post = (props) => {
   const currentPost = props.post;
   const [showComments, setShowComments] = useState(false);
+  // Likes
   const [totalLikes, setTotalLikes] = useState(0);
   const [likersList, setLikersList] = useState([]); // list users qui ont liké ce post
+  const [liked, setLiked] = useState(false);
+  // Dislikes
   const [totalDislikes, setTotalDislikes] = useState(0);
   const [dislikersList, setDislikersList] = useState([]); // list users qui ont disliké ce post
+  const [disliked, setDisliked] = useState(false);
   // récupérer infos de l'utilisateur connecté (depuis localstorage)
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
   const dispatch = useDispatch();
   // const likes = useSelector((state) => state.postReducer); // récupérer likes du store
   // const comments = useSelector((state) => state.commentReducer);
+  const [nouveauCommentaireContenu, setNouveauCommentaireContenu] =
+    useState('');
+
+  /**
+   * Vérifier si user connecté a liké ce post
+   */
+  const checkUserLikePost = () => {
+    // si la fonction JS some() trouve une fois le user id du user connecté
+    // ds la liste des likers, setter le liked à true
+    if (likersList.some((e) => e.user_id === userInfo.id)) {
+      setLiked(true);
+    }
+  };
+
+  /**
+   * Vérifier si user connecté a disliké ce post
+   */
+  const checkUserDislikePost = () => {
+    // si la fonction JS some() trouve une fois le user id du user connecté
+    // ds la liste des dislikers, setter le disliked à true
+    if (dislikersList.some((e) => e.user_id === userInfo.id)) {
+      setDisliked(true);
+    }
+  };
 
   /**
    * Supprime une publication
@@ -37,14 +64,6 @@ const Post = (props) => {
   const handleDeletePost = () => {
     dispatch(deletePost(currentPost.id));
   };
-
-  /**
-   * Récupère le total de likes de la publication depuis le store
-   * TODO: à revoir
-   */
-  // const handleTotalPostLikes = () => {
-  //   dispatch(getTotalPostLikes(currentPost.id));
-  // };
 
   /**
    * Récupère la liste des id des users qui ont liké cette publication
@@ -78,11 +97,22 @@ const Post = (props) => {
       .catch((err) => console.log(err));
   };
 
+  // au chargement et quand 'liked' et/ou 'disliked' est màj
   useEffect(() => {
-    // handleTotalPostLikes();
     getTotalLikes();
     getTotalDislikes();
-  }, []);
+    console.log('récup total Likes et total disliked');
+  }, [liked, disliked]);
+
+  // au chargement et quand 'likersList' est màj
+  useEffect(() => {
+    checkUserLikePost();
+  }, [likersList]);
+
+  // au chargement et quand 'dislikersList' est màj
+  useEffect(() => {
+    checkUserDislikePost();
+  }, [dislikersList]);
 
   return (
     <>
@@ -90,7 +120,7 @@ const Post = (props) => {
         <Card>
           <Card.Body>
             <Row className='d-flex align-items-center'>
-              <Col xs={2} md={1} lg={1}>
+              <Col xs={3} md={3} lg={2}>
                 <img
                   src={currentPost.picture}
                   className='picture-profile-publication img-fluid'
@@ -113,8 +143,7 @@ const Post = (props) => {
               userInfo.id === currentPost.user_id ? (
                 <Col className='d-flex justify-content-end'>
                   <Button
-                    className='button_danger'
-                    variant='danger'
+                    className='delete-button'
                     onClick={() => {
                       // demande de confirmation avant de supprimer
                       if (
@@ -164,19 +193,39 @@ const Post = (props) => {
                   onClick={() => setShowComments(!showComments)}
                   className='icon_add_comment m-2'
                   icon='fa-solid fa-message'
+                  // aria-label="Ajouter un commentaire"
                 />
                 <Like
                   post={currentPost}
-                  likersList={likersList}
-                  getTotalLikes={getTotalLikes} // fonction
+                  liked={liked}
+                  setLiked={setLiked}
+                  setDisliked={setDisliked}
+                  getTotalLikes={getTotalLikes}
+                  totalLikes={totalLikes}
                 />
-                <small>{totalLikes}</small>
-                <Dislike post={currentPost} dislikersList={dislikersList} />
-                <small>{totalDislikes}</small>
+
+                <Dislike
+                  post={currentPost}
+                  disliked={disliked}
+                  setDisliked={setDisliked}
+                  setLiked={setLiked}
+                  getTotalDislikes={getTotalDislikes}
+                  totalDislikes={totalDislikes}
+                />
               </Col>
             </Row>
-            {showComments ? <NewComment post={currentPost} /> : ''}
-            <CommentsList post_id={currentPost.id} />
+            {showComments ? (
+              <NewComment
+                post={currentPost}
+                setNouveauCommentaireContenu={setNouveauCommentaireContenu}
+              />
+            ) : (
+              ''
+            )}
+            <CommentsList
+              post_id={currentPost.id}
+              nouveauCommentaireContenu={nouveauCommentaireContenu}
+            />
             {/* Fin réactions à la publication */}
           </Card.Body>
         </Card>
