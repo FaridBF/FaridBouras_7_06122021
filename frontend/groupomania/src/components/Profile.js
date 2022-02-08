@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import axios from 'axios';
 // import { useSelector } from 'react-redux';
 // import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -30,6 +31,37 @@ const Profile = () => {
   //   // console.log('userInfoLocalStorage.picture', userInfoLocalStorage.picture);
   //   // console.log('nvelle image dans localstorage', userInfo.picture);
   // }, [userData]);
+
+  /**
+   * Permet de supprimer le compte du User connecté
+   */
+  const deleteAccount = () => {
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}api/user/${userInfo.id}`)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          // vider le localstorage
+          localStorage.clear();
+          alert('Votre compte a été supprimé avec succès.');
+          // rediriger vers la page d'inscription
+          window.location = '/signup';
+        }
+      })
+      .catch((err) => {
+        alert("Impossible d'accéder au serveur");
+      });
+  };
+
+  const handleDeleteAccount = () => {
+    // demande de confirmation avant de supprimer
+    if (
+      window.confirm('Êtes-vous certain(e) de vouloir supprimer votre compte ?')
+    ) {
+      // si confirme, continuer et supprimer le compte
+      deleteAccount();
+    }
+  };
 
   return (
     <>
@@ -87,9 +119,11 @@ const Profile = () => {
             {/* Fin phrase + bouton pour les utilisateurs admin */}
 
             <Button
+              className='profile-delete-button'
               variant='outline-danger'
               type='submit'
               aria-describedby='Suppression'
+              onClick={handleDeleteAccount}
             >
               Supprimer mon compte
             </Button>
