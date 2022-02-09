@@ -45,7 +45,7 @@ const Comment = (props) => {
                   <img
                     src={currentComment.picture}
                     className='picture-profile-comment img-fluid'
-                    alt="Visuel de l'utilisateur"
+                    alt='Visuel du profil'
                   />
                 </Col>
                 <Col className='comment-text' xs={8} md={8} lg={8}>
@@ -65,8 +65,7 @@ const Comment = (props) => {
                 userInfo.id === currentComment.author_id ? (
                   <Col className='d-flex justify-content-end'>
                     <Button
-                      className='button_danger'
-                      variant='danger'
+                      className='delete-button'
                       onClick={() => {
                         // demande de confirmation avant de supprimer
                         if (
@@ -78,7 +77,10 @@ const Comment = (props) => {
                         }
                       }}
                     >
-                      <FontAwesomeIcon icon='fa-solid fa-trash' />
+                      <FontAwesomeIcon
+                        icon='fa-solid fa-trash'
+                        aria-label='Icône supprimer'
+                      />
                     </Button>
                   </Col>
                 ) : (

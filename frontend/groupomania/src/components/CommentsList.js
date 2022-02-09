@@ -70,6 +70,7 @@ const CommentsList = (props) => {
     // dispatch(getComments(post_id));
   }, [comments]);
 
+  // Dès que nouveauCommentaireContenu est màj
   useEffect(() => {
     addCommentaire();
     // getComments();

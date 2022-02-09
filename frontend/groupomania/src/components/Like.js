@@ -77,7 +77,7 @@ const Like = (props) => {
         icon='fa-solid fa-thumbs-up'
         onClick={() => (liked ? unLike() : addLike())}
       />
-      <small>{totalLikes}</small>
+      <small className='total-opinion'>{totalLikes}</small>
     </>
   );
 };

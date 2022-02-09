@@ -108,7 +108,6 @@ const Admin = () => {
               <FormControl
                 placeholder='Entrez une adresse email'
                 aria-label='Entrez une adresse email'
-                aria-describedby='Entrez une adresse email'
                 type='email'
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}

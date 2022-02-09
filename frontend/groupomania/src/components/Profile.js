@@ -107,7 +107,7 @@ const Profile = () => {
                   <Button
                     variant='outline-primary'
                     type='submit'
-                    aria-describedby='Suppression'
+                    aria-label='Permet de gérer les droits administrateurs'
                   >
                     Gestion des droits admin
                   </Button>
@@ -122,7 +122,7 @@ const Profile = () => {
               className='profile-delete-button'
               variant='outline-danger'
               type='submit'
-              aria-describedby='Suppression'
+              aria-label='Permet la suppression du compte'
               onClick={handleDeleteAccount}
             >
               Supprimer mon compte

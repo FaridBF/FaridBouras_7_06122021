@@ -82,7 +82,7 @@ const Dislike = (props) => {
         // si user a déjà disliké ce post, appeler unDislike(), sinon, appeler addDislike()
         onClick={() => (disliked ? unDislike() : addDisLike())}
       />
-      <small>{totalDislikes}</small>
+      <small className='total-opinion'>{totalDislikes}</small>
     </>
   );
 };

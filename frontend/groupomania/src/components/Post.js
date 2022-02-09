@@ -155,7 +155,10 @@ const Post = (props) => {
                       }
                     }}
                   >
-                    <FontAwesomeIcon icon='fa-solid fa-trash' />
+                    <FontAwesomeIcon
+                      icon='fa-solid fa-trash'
+                      aria-label='Icône supprimer'
+                    />
                   </Button>
                 </Col>
               ) : (
@@ -168,7 +171,11 @@ const Post = (props) => {
               {/* Début affichage image */}
               {currentPost.image !== undefined || currentPost.image !== null ? (
                 <>
-                  <img className='publication-image' src={currentPost.image} />
+                  <img
+                    className='publication-image'
+                    src={currentPost.image}
+                    alt='Image de publication'
+                  />
                 </>
               ) : (
                 ''
