@@ -54,7 +54,7 @@ const NewComment = (props) => {
             <Row className='d-flex align-items-center'>
               <Form onSubmit={handleSubmitComment}>
                 <Form.Control
-                  className='new-publication'
+                  className='new-publication-comment'
                   as='textarea'
                   placeholder='Un commentaire à laisser ?'
                   value={commentContent}

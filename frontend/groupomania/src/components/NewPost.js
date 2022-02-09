@@ -62,7 +62,7 @@ const NewPost = () => {
         <Card>
           <Card.Body>
             <Row className='d-flex align-items-center'>
-              <Col xs={2} md={1} lg={1}>
+              <Col xs={2} md={2} lg={2}>
                 <img
                   src={userInfo.picture}
                   className='picture-profile-publication img-fluid'
@@ -79,7 +79,7 @@ const NewPost = () => {
               <Form onSubmit={handleSubmitPost} className='what-s-up'>
                 <FloatingLabel
                   controlId='floatingTextarea'
-                  label="Quoi de neuf aujourd'hui ?"
+                  label='Quoi de neuf?'
                   className='new-publication'
                 >
                   <Form.Control
@@ -96,7 +96,7 @@ const NewPost = () => {
                 <Button
                   variant='primary'
                   type='submit'
-                  aria-describedby='Publier'
+                  aria-label='Publier'
                   disabled={postContent.length === 0}
                 >
                   Publier
@@ -108,8 +108,7 @@ const NewPost = () => {
                   <Col>Image ajoutée : {postImage.name}</Col>
                   <Col className='d-flex '>
                     <Button
-                      className='button_danger'
-                      variant='danger'
+                      className='delete-button'
                       onClick={() => setPostImage(null)}
                     >
                       <FontAwesomeIcon icon='fa-solid fa-trash' />
@@ -122,56 +121,70 @@ const NewPost = () => {
             </Row>
             {/* Fin affichage image à poster */}
             {/* Début ajout image au post */}
-            <Row>
-              <label htmlFor='file-post'>
-                <FontAwesomeIcon
-                  icon='fa-solid fa-image'
-                  color='grey'
-                  className='upload-post-image'
-                />
-              </label>
-              <input
-                id='file-post'
-                name='file'
-                type='file'
-                accept='.jpg, .jpeg, .png'
-                onChange={(e) => setPostImage(e.target.files[0])}
-              />
-            </Row>
-            {/* Fin ajout image au post */}
-            <Row>
-              <label htmlFor='link-post'>
-                <FontAwesomeIcon
-                  icon='fa-solid fa-link'
-                  color='grey'
-                  className='upload-post-link'
-                  onClick={() => setDisplayLinkInput(!displayLinkInput)}
-                />
-              </label>
-              {displayLinkInput ? (
-                <>
-                  <input
-                    id='link-post'
-                    name='link-post'
-                    type='url'
-                    // pattern={'http://.*' || 'https://.*'}
-                    placeholder='Exemple de lien: https://groupomania.com'
-                    value={postLink}
-                    onChange={(e) => setPostLink(e.target.value)}
+            <Row className='new-publication-content-style'>
+              <Row className='style_file_post'>
+                <label
+                  htmlFor='file-post'
+                  title='Ajouter une image à la publication'
+                >
+                  <FontAwesomeIcon
+                    icon='fa-solid fa-image'
+                    color='grey'
+                    className='upload-post-image'
+                    aria-label='Icône ajouter une image'
                   />
-                  <Col className='d-flex justify-content-start'>
-                    <Button
-                      className='button_danger'
-                      variant='danger'
-                      onClick={() => setPostLink('')}
-                    >
-                      <FontAwesomeIcon icon='fa-solid fa-trash' />
-                    </Button>
-                  </Col>
-                </>
-              ) : (
-                ''
-              )}
+                </label>
+                <input
+                  id='file-post'
+                  name='file'
+                  type='file'
+                  accept='.jpg, .jpeg, .png'
+                  onChange={(e) => setPostImage(e.target.files[0])}
+                  title='Choisir une image'
+                />
+              </Row>
+              {/* Fin ajout image au post */}
+              <Row className='style_link_post'>
+                <label
+                  htmlFor='link-post'
+                  title='Ajouter un lien à la publication'
+                >
+                  <FontAwesomeIcon
+                    icon='fa-solid fa-link'
+                    color='grey'
+                    className='upload-post-link'
+                    onClick={() => setDisplayLinkInput(!displayLinkInput)}
+                    aria-label='Icône ajouter un lien'
+                  />
+                </label>
+                {displayLinkInput ? (
+                  <>
+                    <input
+                      id='link-post'
+                      name='link-post'
+                      type='url'
+                      // pattern={'http://.*' || 'https://.*'}
+                      placeholder='Exemple de lien: https://groupomania.com'
+                      value={postLink}
+                      onChange={(e) => setPostLink(e.target.value)}
+                      title='Choisir un lien'
+                    />
+                    <Col className='d-flex justify-content-start'>
+                      <Button
+                        className='delete-button'
+                        onClick={() => setPostLink('')}
+                      >
+                        <FontAwesomeIcon
+                          icon='fa-solid fa-trash'
+                          aria-label='Icône supprimer'
+                        />
+                      </Button>
+                    </Col>
+                  </>
+                ) : (
+                  ''
+                )}
+              </Row>
             </Row>
           </Card.Body>
         </Card>

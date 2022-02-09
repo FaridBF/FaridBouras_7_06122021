@@ -95,6 +95,7 @@ const Signup = () => {
                       type='email'
                       placeholder='Entrez votre adresse email'
                       name='email'
+                      aria-label="saisie de l'email"
                       value={values.email}
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -109,6 +110,7 @@ const Signup = () => {
                       type='text'
                       placeholder='Entrez votre Nom'
                       name='lastName'
+                      aria-label='saisie du mot du nom'
                       value={values.lastName}
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -123,6 +125,7 @@ const Signup = () => {
                       type='text'
                       placeholder='Entrez votre Prénom'
                       name='firstName'
+                      aria-label='saisie du prénom'
                       value={values.firstName}
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -137,6 +140,7 @@ const Signup = () => {
                       type='password'
                       placeholder='Entrez votre mot de passe'
                       name='password'
+                      aria-label='saisie du mot de passe'
                       value={values.password}
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -151,6 +155,7 @@ const Signup = () => {
                       type='password'
                       placeholder='Validez votre nouveau mot de passe'
                       name='confirmPassword'
+                      aria-label='saisie du mot de passe'
                       value={values.confirmPassword}
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -170,7 +175,7 @@ const Signup = () => {
                   <Button
                     variant='primary'
                     type='submit'
-                    aria-describedby='Connexion'
+                    aria-label="Permet de s'inscrire"
                     disabled={
                       !values.email ||
                       errors.email ||

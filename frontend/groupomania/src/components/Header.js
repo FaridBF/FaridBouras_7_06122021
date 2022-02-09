@@ -77,14 +77,18 @@ const Header = () => {
           ) : currentURLPathname !== '/login' ? (
             // si on est ailleurs que sur login sans user connecté
             <>
-              <Link to='/login'>
+              <Link
+                aria-label='Lien permettant la connexion'
+                alt='Illustration de connexion'
+                to='/login'
+              >
                 <Button
                   aria-label='Connexion'
                   variant='secondary'
                   size='lg'
                   active
                 >
-                  Connexion
+                  <FontAwesomeIcon icon='fa-solid fa-right-to-bracket' />
                 </Button>
               </Link>
             </>

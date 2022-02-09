@@ -122,7 +122,7 @@ const Login = () => {
                   <Button
                     variant='primary'
                     type='submit'
-                    aria-describedby='Connexion'
+                    aria-label='Permet de se connecter'
                     disabled={
                       !values.email ||
                       errors.email ||
@@ -139,7 +139,7 @@ const Login = () => {
                   <Link to='/signup'>
                     <Button
                       variant='outline-primary'
-                      aria-describedby='Création de compte'
+                      aria-label='Permet de créer un compte'
                     >
                       Créer un compte
                     </Button>
