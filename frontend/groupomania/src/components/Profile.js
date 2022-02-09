@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import UploadImage from './UploadImage';
+import NotLoggedIn from './NotLoggedIn';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -66,70 +67,79 @@ const Profile = () => {
   return (
     <>
       <Header />
-      <Container className='profile-main-container'>
-        <Row className='profile-container'>
-          <Col className='picture-container' xs={12} md={12} lg={4}>
-            <img
-              src={userInfo.picture}
-              className='picture-profile img-fluid'
-              alt="Visuel de l'utilisateur"
-            />
-            <UploadImage />
-          </Col>
-          <Col className='text-container' xs={8} md={8} lg={8}>
-            <p>
-              Prénom:
-              <span className='style-text-container'>
-                {' '}
-                {userInfo.first_name}
-              </span>
-            </p>
-            <p>
-              Nom:
-              <span className='style-text-container'>
-                {' '}
-                {userInfo.last_name}
-              </span>
-            </p>
-            <p>
-              Email:{' '}
-              <span className='style-text-container'> {userInfo.email}</span>
-            </p>
-
-            {/* Début phrase + bouton pour les utilisateurs admin */}
-            {userInfo.is_admin === 1 ? (
-              <>
-                <p title='Un compte admin permet de modérer des comptes, publications et commentaires.'>
-                  <small>Vous disposez d'un compte admin </small>
-                  <FontAwesomeIcon icon='fa-solid fa-circle-info' />
+      {userInfo ? (
+        <>
+          <Container className='profile-main-container'>
+            <Row className='profile-container'>
+              <Col className='picture-container' xs={12} md={12} lg={4}>
+                <img
+                  src={userInfo.picture}
+                  className='picture-profile img-fluid'
+                  alt="Visuel de l'utilisateur"
+                />
+                <UploadImage />
+              </Col>
+              <Col className='text-container' xs={8} md={8} lg={8}>
+                <p>
+                  Prénom:
+                  <span className='style-text-container'>
+                    {' '}
+                    {userInfo.first_name}
+                  </span>
                 </p>
-                <Link to='/admin'>
-                  <Button
-                    variant='outline-primary'
-                    type='submit'
-                    aria-label='Permet de gérer les droits administrateurs'
-                  >
-                    Gestion des droits admin
-                  </Button>
-                </Link>
-              </>
-            ) : (
-              ''
-            )}
-            {/* Fin phrase + bouton pour les utilisateurs admin */}
+                <p>
+                  Nom:
+                  <span className='style-text-container'>
+                    {' '}
+                    {userInfo.last_name}
+                  </span>
+                </p>
+                <p>
+                  Email:{' '}
+                  <span className='style-text-container'>
+                    {' '}
+                    {userInfo.email}
+                  </span>
+                </p>
 
-            <Button
-              className='profile-delete-button'
-              variant='outline-danger'
-              type='submit'
-              aria-label='Permet la suppression du compte'
-              onClick={handleDeleteAccount}
-            >
-              Supprimer mon compte
-            </Button>
-          </Col>
-        </Row>
-      </Container>
+                {/* Début phrase + bouton pour les utilisateurs admin */}
+                {userInfo.is_admin === 1 ? (
+                  <>
+                    <p title='Un compte admin permet de modérer des comptes, publications et commentaires.'>
+                      <small>Vous disposez d'un compte admin </small>
+                      <FontAwesomeIcon icon='fa-solid fa-circle-info' />
+                    </p>
+                    <Link to='/admin'>
+                      <Button
+                        variant='outline-primary'
+                        type='submit'
+                        aria-label='Permet de gérer les droits administrateurs'
+                      >
+                        Gestion des droits admin
+                      </Button>
+                    </Link>
+                  </>
+                ) : (
+                  ''
+                )}
+                {/* Fin phrase + bouton pour les utilisateurs admin */}
+
+                <Button
+                  className='profile-delete-button'
+                  variant='outline-danger'
+                  type='submit'
+                  aria-label='Permet la suppression du compte'
+                  onClick={handleDeleteAccount}
+                >
+                  Supprimer mon compte
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+        </>
+      ) : (
+        <NotLoggedIn />
+      )}
       <Footer />
     </>
   );

@@ -95,8 +95,7 @@ body {
   height: 44rem !important;
 }
 
-.profile-container,
-.admin-container {
+.profile-container {
   display: flex;
   justify-content: center;
   padding: 5.4rem;
@@ -157,16 +156,21 @@ body {
   font-weight: bold;
 }
 
-.admin-access-container {
-  display: flex;
-  justify-content: center;
+/* Message non connecté */
+.notlogged-access-container {
   margin-top: 20px;
   margin-bottom: 20px;
+  min-height: 30rem;
 }
 
-.admin-container {
-  font-size: 30px;
-  width: 70%;
+.notlogged-container {
+  font-size: 1rem;
+  text-align: center;
+
+  padding: 0.6rem;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03), 0 0 2px rgba(0, 0, 0, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 .position-admin-container {
@@ -324,8 +328,7 @@ body {
     justify-content: space-between;
   }
 
-  .profile-container,
-  .admin-container {
+  .profile-container {
     padding: 0.6rem;
     width: 100%;
     height: 85%;
