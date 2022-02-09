@@ -167,8 +167,8 @@ const Admin = () => {
           </Row>
         </Container>
       ) : (
-        <Container className='admin-access-container'>
-          <Row className='admin-container'>
+        <Container className='notlogged-access-container'>
+          <Row className='notlogged-container'>
             <p>
               Il est nécéssaire de disposer d'un compte 'admin' afin de pouvoir
               accéder à cette page.
