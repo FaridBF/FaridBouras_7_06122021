@@ -16,12 +16,11 @@ const Home = () => {
     <>
       <Header />
       <Container className='main-container justify-content-center'>
-        <Col xs={10} md={10} lg={10}>
+        <Col xs={11} md={10} lg={6}>
           <NewPost />
           <PostsList />
         </Col>
       </Container>
-      <Footer />
     </>
   );
 };

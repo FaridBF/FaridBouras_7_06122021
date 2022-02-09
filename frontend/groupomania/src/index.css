@@ -1,4 +1,5 @@
 body {
+  min-width: 500px;
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -17,6 +18,29 @@ body {
 /* Tout le contenu de la page sauf le footer */
 .content-wrap {
   flex: 1;
+}
+
+.new-publication-content-style {
+  display: flex;
+  width: 50%;
+}
+
+.style_file_post {
+  width: auto !important;
+}
+
+.style_link_post.row {
+  width: auto !important;
+  margin-left: -20px;
+}
+
+.new-publication-comment {
+  margin-bottom: 5px !important;
+}
+
+.what-s-up {
+  display: flex;
+  margin-top: 5px !important;
 }
 
 /* Header */
@@ -48,29 +72,36 @@ body {
 }
 
 .container {
-  height: 900px;
+  height: auto;
 }
 
 .img-fluid {
   width: 100%;
-  max-width: 80% !important;
+  /* max-width: 80% !important; */
 }
 
 /* Page profil */
 
 .header_hello_user {
-  color: red;
+  /* color: #de2b02; */
   margin: 0;
   font-weight: 600;
 }
 
-.profile-container {
+.profile-main-container {
   display: flex;
   justify-content: center;
-  padding: 2rem;
+  align-items: center;
+  height: 44rem !important;
+}
+
+.profile-container,
+.admin-container {
+  display: flex;
+  justify-content: center;
+  padding: 5.4rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03), 0 0 2px rgba(0, 0, 0, 0.06),
     0 2px 6px rgba(0, 0, 0, 0.12);
-  margin-bottom: 25px;
 }
 
 .picture-container {
@@ -89,6 +120,7 @@ body {
 
 .style-text-container {
   font-weight: bold;
+  color: black;
 }
 
 .picture-profile {
@@ -108,6 +140,44 @@ body {
   font-weight: bold;
   color: black;
   font-size: 18px;
+}
+
+/* Page Admin */
+.style-admin-h1 {
+  color: #5c636a;
+  font-size: 35px;
+}
+
+.style-admin-p {
+  font-size: 15px;
+}
+
+.checkbox-admin {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.admin-access-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.admin-container {
+  font-size: 30px;
+  width: 70%;
+}
+
+.position-admin-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-delete-button {
+  margin-top: 10px;
 }
 
 /* Contenu principal entre header et footer (login et signup) */
@@ -146,9 +216,39 @@ body {
   flex-direction: column;
 }
 
+.logo-footer-position {
+  margin-top: 10px;
+}
+
 .footer-icon {
-  color: black;
-  font-size: 25px;
+  color: #797d86;
+  font-size: 30px;
+  margin-left: 10px;
+}
+
+.footer-icon :hover {
+  color: #fd370ded;
+}
+
+.total-link-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.link-footer {
+  display: flex;
+  flex-direction: row;
+  margin-right: 15px;
+  align-items: center;
+  text-decoration: none;
+  list-style: none;
+  color: #545454;
+  background-color: #ffffff;
+}
+
+.link-footer:hover {
+  color: #fd3409;
 }
 
 @media screen and (min-width: 0px) and (max-width: 640px) {
@@ -177,8 +277,30 @@ body {
     margin-top: 4rem;
   }
 
+  .profile-main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 55rem !important;
+  }
+
+  .profile-container,
+  .admin-container {
+    padding: 0.6rem;
+    width: 100%;
+    height: 85%;
+  }
+
   .footer-container {
     height: 10vh;
+  }
+
+  .footer-position {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-direction: row;
   }
 }
 
@@ -191,7 +313,7 @@ body {
   }
 
   .container {
-    height: 900px;
+    height: auto;
   }
 
   .header-container {
@@ -201,6 +323,17 @@ body {
     align-items: center;
     justify-content: space-between;
   }
+
+  .profile-container,
+  .admin-container {
+    padding: 0.6rem;
+    width: 100%;
+    height: 85%;
+  }
+
+  .picture-profile {
+    width: 45%;
+  }
 }
 
 /* Page publications, page home */
@@ -209,6 +342,19 @@ body {
   width: 60rem;
   box-shadow: 0 4px 10px rgb(0 0 0 / 3%), 0 0 2px rgb(0 0 0 / 6%),
     0 2px 6px rgb(0 0 0 / 12%);
+  border-radius: 0.75rem !important;
+}
+
+.delete-button {
+  color: #fd3409 !important;
+  background-color: white !important;
+  border-color: #fd3409 !important;
+  border-radius: 2rem !important;
+}
+
+.delete-button:hover {
+  color: white !important;
+  background-color: #fd3409 !important;
 }
 
 /* Début nouvelle publication */
@@ -218,10 +364,6 @@ body {
   border-radius: 10px;
   width: 100%;
   margin-right: 20px;
-}
-
-.what-s-up {
-  display: flex;
 }
 
 #file-post {
@@ -244,7 +386,7 @@ body {
 }
 
 .picture-profile-publication {
-  width: 4rem !important;
+  width: 3rem !important;
   clip-path: circle();
 }
 
@@ -253,7 +395,8 @@ body {
 }
 
 .publication-date {
-  color: #8a8383;
+  /* color: #8a8383; */
+  color: #797272;
 }
 
 .publication-content {
@@ -311,6 +454,10 @@ img.publication-image {
   color: grey;
 }
 
+.total-opinion {
+  color: #797272;
+}
+
 .d-flex {
   flex-wrap: nowrap !important;
   display: flex !important;
@@ -333,11 +480,10 @@ img.publication-image {
   background-color: white;
   color: black;
   font-weight: 600;
-  margin-left: -30px;
 }
 
 .date-text {
-  color: #8a8383;
+  color: #797272;
   font-weight: normal !important;
 }
 
@@ -346,7 +492,7 @@ img.publication-image {
 }
 
 .col-lg-8 {
-  width: 88% !important;
+  width: 80% !important;
 }
 
 .col-lg-3 {
@@ -358,5 +504,5 @@ img.publication-image {
 }
 
 .container {
-  height: 900px;
+  height: auto;
 }
