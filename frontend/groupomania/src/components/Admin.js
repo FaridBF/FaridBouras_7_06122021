@@ -13,11 +13,12 @@ import Button from 'react-bootstrap/Button';
 import Header from './Header';
 import Footer from './Footer';
 
+import { Formik } from 'formik';
+import { validate } from '../Validations/AdminValidation';
+
 const Admin = () => {
   // Utilisateur connecté
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
-  // Email recherché
-  const [emailInput, setEmailInput] = useState('');
   // Utilisateur trouvé
   const [userFound, setUserFound] = useState({});
   // Boolean qui gère l'affichage de l'utilisateur trouvé
@@ -26,14 +27,15 @@ const Admin = () => {
   /**
    * Requête au back pour récupérer user email avec ses droits grâce à l'email
    */
-  const getUserByEmail = async () => {
+  const getUserByEmail = async (values, actions) => {
     // vider l'affichage de l'ancien au cas où il y avait déjà un utilisateur recherché
     setShowUserFound(false);
     await axios
       .post(`${process.env.REACT_APP_API_URL}api/user/admin-rights`, {
-        email: emailInput
+        email: values.emailInput // email recherché ds input
       })
       .then((res) => {
+        actions.setSubmitting(false);
         if (res.status === 200) {
           // Récupération des infos de l'utilisateur trouvé
           setUserFound(res.data);
@@ -48,13 +50,14 @@ const Admin = () => {
       .catch((err) => {
         alert("Impossible d'accéder au serveur");
       });
+    actions.setSubmitting(false);
+    actions.resetForm();
   };
 
   /**
    * Remettre la recherche à zéro pour une nouvelle recherche d'utilisateur
    */
   const resetResearch = () => {
-    setEmailInput('');
     setUserFound({});
     setShowUserFound(false);
   };
@@ -104,22 +107,59 @@ const Admin = () => {
               Recherchez l'utilisateur via son adresse email pour lequel vous
               souhaitez modifier les droits administrateur.
             </p>
-            <InputGroup className='mb-3'>
-              <FormControl
-                placeholder='Entrez une adresse email'
-                aria-label='Entrez une adresse email'
-                type='email'
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-              />
-              <Button
-                variant='secondary'
-                id='button-addon2'
-                onClick={getUserByEmail}
-              >
-                Rechercher
-              </Button>
-            </InputGroup>
+            <Formik
+              onSubmit={getUserByEmail}
+              initialValues={{
+                emailInput: ''
+              }}
+              validationSchema={validate}
+            >
+              {({
+                values,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+                errors,
+                touched
+              }) => (
+                <InputGroup className='mb-3'>
+                  <Form className='admin-search-form' onSubmit={handleSubmit}>
+                    <Col>
+                      <FormControl
+                        placeholder='Entrez une adresse email'
+                        aria-label='Entrez une adresse email'
+                        type='email'
+                        name='emailInput'
+                        value={values.emailInput}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                      />
+                      {/* Début affichage erreurs input recherche */}
+                      {errors.emailInput && touched.emailInput && (
+                        <div className='text-danger'>{errors.emailInput}</div>
+                      )}
+                      {/* Fin affichage erreurs input recherche */}
+                    </Col>
+                    <Col>
+                      <Button
+                        variant='secondary'
+                        id='button-addon2'
+                        disabled={
+                          !values.emailInput ||
+                          errors.emailInput ||
+                          isSubmitting
+                        }
+                        onClick={handleSubmit}
+                      >
+                        Rechercher
+                      </Button>
+                    </Col>
+                  </Form>
+                </InputGroup>
+              )}
+            </Formik>
+
             {showUserFound ? (
               <>
                 {/* Affichage résultat de la recherche */}
