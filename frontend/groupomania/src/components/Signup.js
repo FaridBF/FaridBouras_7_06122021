@@ -173,6 +173,7 @@ const Signup = () => {
                     </small>
                   </p>
                   <Button
+                    className='button_signup'
                     variant='primary'
                     type='submit'
                     aria-label="Permet de s'inscrire"

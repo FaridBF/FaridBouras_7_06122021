@@ -30,8 +30,7 @@ body {
 }
 
 .style_link_post.row {
-  width: auto !important;
-  margin-left: -20px;
+  width: auto;
 }
 
 .new-publication-comment {
@@ -41,6 +40,11 @@ body {
 .what-s-up {
   display: flex;
   margin-top: 5px !important;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 1rem 1.5rem !important;
 }
 
 /* Header */
@@ -77,13 +81,11 @@ body {
 
 .img-fluid {
   width: 100%;
-  /* max-width: 80% !important; */
 }
 
 /* Page profil */
 
 .header_hello_user {
-  /* color: #de2b02; */
   margin: 0;
   font-weight: 600;
 }
@@ -176,8 +178,9 @@ body {
 .position-admin-container {
   margin-top: 20px;
   margin-bottom: 20px;
+  min-height: 520px;
   display: flex;
-  justify-content: center;
+  align-items: center;
 }
 
 .admin-search-form {
@@ -200,6 +203,10 @@ body {
 .main-container {
   height: auto !important;
   margin-top: 25px;
+}
+
+.button_signup {
+  margin-bottom: 10px;
 }
 
 /* Footer */
@@ -304,12 +311,16 @@ body {
     height: 10vh;
   }
 
+  #link-post {
+    width: 70% !important;
+  }
+
   .footer-position {
     display: flex;
     align-items: center;
     justify-content: center;
     align-content: center;
-    flex-direction: row;
+    flex-direction: column;
   }
 }
 
@@ -335,8 +346,8 @@ body {
 
   .profile-container {
     padding: 0.6rem;
-    width: 100%;
-    height: 85%;
+    width: 95%;
+    height: 95%;
   }
 
   .picture-profile {
@@ -353,6 +364,33 @@ body {
   border-radius: 0.75rem !important;
 }
 
+.card-body {
+  flex: 1 1 auto;
+  padding: 1rem 1.5rem !important;
+}
+
+.image_added {
+  display: flex;
+  width: 100%;
+}
+
+.delete-button-image-added {
+  color: #fd3409 !important;
+  background-color: white !important;
+  border-color: transparent !important;
+  margin-left: 10px;
+  margin-top: -4px;
+  padding: 0rem !important;
+}
+
+.delete-button-link-added {
+  color: #fd3409 !important;
+  background-color: white !important;
+  border-color: transparent !important;
+  margin-left: 0px;
+  padding: 0rem !important;
+}
+
 .delete-button {
   color: #fd3409 !important;
   background-color: white !important;
@@ -363,6 +401,10 @@ body {
 .delete-button:hover {
   color: white !important;
   background-color: #fd3409 !important;
+}
+
+#link-post {
+  width: 77%;
 }
 
 /* Début nouvelle publication */
@@ -382,10 +424,6 @@ body {
 .upload-post-link:hover {
   color: #fd34099c;
   cursor: pointer;
-}
-
-#link-post {
-  width: 50%;
 }
 
 .author-date-publication {
@@ -478,8 +516,8 @@ img.publication-image {
 
 /* Commentaires de publications */
 .picture-profile-comment {
-  width: 2rem !important;
   clip-path: circle();
+  width: 40px;
 }
 
 .comment-text {
