@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -101,7 +101,6 @@ const Post = (props) => {
   useEffect(() => {
     getTotalLikes();
     getTotalDislikes();
-    console.log('récup total Likes et total disliked');
   }, [liked, disliked]);
 
   // au chargement et quand 'likersList' est màj
@@ -182,9 +181,13 @@ const Post = (props) => {
               )}
               {/* Fin affichage image */}
               {/* Début affichage lien */}
-              {currentPost.link != undefined || currentPost.link != null ? (
+              {currentPost.link !== undefined || currentPost.link !== null ? (
                 <>
-                  <a target='_blank' href={currentPost.link}>
+                  <a
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    href={currentPost.link}
+                  >
                     {currentPost.link}
                   </a>
                 </>

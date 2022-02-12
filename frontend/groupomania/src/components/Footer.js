@@ -26,6 +26,7 @@ const Footer = () => {
             <a
               aria-label='Lien permettant de se connecter à Facebook'
               target='_blank'
+              rel='noopener noreferrer'
               href='https://www.facebook.com/'
             >
               <FontAwesomeIcon
@@ -37,6 +38,7 @@ const Footer = () => {
             <a
               aria-label='Lien permettant de se connecter à Twitter'
               target='_blank'
+              rel='noopener noreferrer'
               href='https://twitter.com/home'
             >
               <FontAwesomeIcon
@@ -48,6 +50,7 @@ const Footer = () => {
             <a
               aria-label='Lien permettant de se connecter à Youtube'
               target='_blank'
+              rel='noopener noreferrer'
               href='https://www.youtube.com/'
             >
               <FontAwesomeIcon
@@ -59,6 +62,7 @@ const Footer = () => {
             <a
               aria-label='Lien permettant de se connecter à Github'
               target='_blank'
+              rel='noopener noreferrer'
               href='https://github.com/FaridBF/FaridBouras_7_06122021'
             >
               <FontAwesomeIcon
