@@ -173,7 +173,7 @@ const Post = (props) => {
                   <img
                     className='publication-image'
                     src={currentPost.image}
-                    alt='Image de publication'
+                    alt={currentPost.image ? 'Image de publication' : ''}
                   />
                 </>
               ) : (
