@@ -10,13 +10,14 @@ import {
 } from '../actions/comment.actions';
 
 // State initialement égale à un objet vide
-const initialState = {};
+const initialState = [];
 
 export default function commentReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_COMMENTS:
       // retourne state mis à jour (state précédent + nveau commentaire)
-      return (state = [...state, action.payload]);
+      // return (state = [...state, action.payload]);
+      return [...state, action.payload]; // comme post
     case GET_COMMENTS:
       // return [action.payload, ...state];
       return action.payload;
