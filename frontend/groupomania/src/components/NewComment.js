@@ -22,22 +22,33 @@ const NewComment = (props) => {
    * Gestion du submit d'un nouveau commentaire
    * @param  {e}: event
    */
-  const handleSubmitComment = async (e) => {
+  const handleSubmitComment = (e) => {
     e.preventDefault();
     if (commentContent.length > 0) {
       // objet représentant un nouveau commentaire
       const data = {
         user_id: userInfo.id,
         content: commentContent,
-        post_id: props.post.id
+        post_id: props.post.id,
+        //
+        first_name: userInfo.first_name,
+        last_name: userInfo.last_name,
+        picture: userInfo.picture
       };
-      // secours: envoyer à CommentsList le nouveau commentaire
-      // console.log('commentContent', commentContent);
-      // envoyer nouveau commentaire au composant parent (Post)
-      props.setNouveauCommentaireContenu(commentContent);
-      await dispatch(addComment(data)); // ajouter commentaire via redux
-      dispatch(getComments(props.post.id)); // récup liste commentaires via redux
+
+      // AVANT
+      // await dispatch(addComment(data)); // ajouter commentaire via redux
+      // // envoyer nouveau commentaire au composant parent (Post)
+      // console.log('hey');
+      // props.setNouveauCommentaireContenu(commentContent);
+      // setCommentContent(''); // vider input
+      // APRES
+      dispatch(addComment(data)) // ajouter commentaire via redux
+        // ensuite, envoyer nouveau commentaire au composant parent (Post)
+        .then(props.setNouveauCommentaireContenu(commentContent));
       setCommentContent(''); // vider input
+      //
+      // dispatch(getComments(props.post.id)); // récup liste commentaires via redux
       // document.location.reload(); // TODO: remplacer cette solution de secours
       // dispatch(getPosts(5)); ne fonctionn pas
       //   .then(() => dispatch(getPosts()))

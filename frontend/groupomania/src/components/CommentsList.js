@@ -16,29 +16,7 @@ const CommentsList = (props) => {
   // const [nouveauCommentaireContenu, setNouveauCommentaireContenu] =
   //   useState('');
   const nouveauCommentaireContenu = props.nouveauCommentaireContenu;
-  const userInfo = JSON.parse(localStorage.getItem('user_details'));
-
-  // ajouter commentaire à liste 'comments'
-  const addCommentaire = () => {
-    const nouvelObjetCommentaire = {
-      author_id: userInfo.id,
-      content: nouveauCommentaireContenu,
-      create_time: 'maintenant',
-      first_name: userInfo.first_name,
-      is_admin: userInfo.is_admin,
-      last_name: userInfo.last_name,
-      picture: userInfo.picture,
-      post_id: post_id
-    };
-    setComments((comments) => [...comments, nouvelObjetCommentaire]);
-    // comments.push(nouvelObjetCommentaire);
-    // récupérer liste des commentaires du back (API)
-    getCommentsList();
-  };
-
-  //test
-  const dispatch = useDispatch(); // pr envoyer une action
-  // const comments = useSelector((state) => state.commentReducer); // récupérer comments du store
+  // const userInfo = JSON.parse(localStorage.getItem('user_details'));
 
   // récupérer la liste des commentaires via redux
   // const getCommentsList = (post_id) => {
@@ -59,22 +37,23 @@ const CommentsList = (props) => {
   };
 
   // au chargement du composant
-  useEffect(() => {
-    // récupérer liste des commentaires du back (API)
-    getCommentsList();
-  }, []); // tableau vide car on veut que cela ne se déclenche qu'à l'affichage du composant
+  // useEffect(() => {
+  //   // récupérer liste des commentaires du back (API)
+  //   getCommentsList();
+  // }, []); // tableau vide car on veut que cela ne se déclenche qu'à l'affichage du composant
 
   // Dès que comments est màj, màj GET_COMMENTS dans le store
   useEffect(() => {
-    // console.log('comments ac le nouveau:', comments);
     // dispatch(getComments(post_id));
   }, [comments]);
 
   // Dès que nouveauCommentaireContenu est màj
   useEffect(() => {
-    addCommentaire();
+    // addCommentaire();
     // getComments();
-    // console.log('comments in commentsList', comments);
+    // récupérer liste des commentaires du back (API)
+    getCommentsList();
+    console.log('récupération commentaires');
   }, [nouveauCommentaireContenu]);
 
   return (

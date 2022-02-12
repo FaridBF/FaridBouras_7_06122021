@@ -9,9 +9,11 @@ exports.createComment = (req, res) => {
   const commentToCreate = {
     ...req.body
   };
-  const sql_query = `INSERT INTO comment SET ?`;
+  // const sql_query = `INSERT INTO comment SET ?`;
+  const sql_query = `INSERT INTO comment (content, user_id, post_id) VALUES ("${req.body.content}", "${req.body.user_id}", "${req.body.post_id}"); `;
   const db = db_connection.getDB();
-  db.query(sql_query, commentToCreate, (err, result) => {
+  // db.query(sql_query, commentToCreate, (err, result) => {
+  db.query(sql_query, (err, result) => {
     if (!result) {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
