@@ -5,8 +5,7 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 
-import { addComment, getComments } from '../actions/comment.actions';
-import { getPosts } from '../actions/post.actions';
+import { addComment } from '../actions/comment.actions';
 
 /**
  * Représente le formulaire d'un nouveau commentaire
@@ -22,7 +21,7 @@ const NewComment = (props) => {
    * Gestion du submit d'un nouveau commentaire
    * @param  {e}: event
    */
-  const handleSubmitComment = (e) => {
+  const handleSubmitComment = async (e) => {
     e.preventDefault();
     if (commentContent.length > 0) {
       // objet représentant un nouveau commentaire
@@ -30,30 +29,17 @@ const NewComment = (props) => {
         user_id: userInfo.id,
         content: commentContent,
         post_id: props.post.id,
-        //
+        // facultatif
         first_name: userInfo.first_name,
         last_name: userInfo.last_name,
         picture: userInfo.picture
       };
 
-      // AVANT
-      // await dispatch(addComment(data)); // ajouter commentaire via redux
-      // // envoyer nouveau commentaire au composant parent (Post)
-      // console.log('hey');
-      // props.setNouveauCommentaireContenu(commentContent);
-      // setCommentContent(''); // vider input
-      // APRES
-      dispatch(addComment(data)) // ajouter commentaire via redux
-        // ensuite, envoyer nouveau commentaire au composant parent (Post)
-        .then(props.setNouveauCommentaireContenu(commentContent));
+      // ajouter commentaire via redux
+      await dispatch(addComment(data));
+      // ensuite, envoyer nouveau commentaire au composant parent (Post)
+      props.setNouveauCommentaireContenu(commentContent);
       setCommentContent(''); // vider input
-      //
-      // dispatch(getComments(props.post.id)); // récup liste commentaires via redux
-      // document.location.reload(); // TODO: remplacer cette solution de secours
-      // dispatch(getPosts(5)); ne fonctionn pas
-      //   .then(() => dispatch(getPosts()))
-      //   // .then(() => dispatch(getComments()))
-      //   .then(() => setCommentContent('')); // reset l'input de content
     }
   };
 
