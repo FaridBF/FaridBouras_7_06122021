@@ -41,26 +41,7 @@ export const getComments = (postId) => {
       })
       .catch((err) => console.log(err));
   };
-  //ok
-  // return (dispatch) => {
-  //   dispatch({ type: GET_COMMENTS, payload: data });
-  // };
 };
-
-// export const GET_COMMENT_DETAILS = 'GET_COMMENT_DETAILS';
-
-// export const getCommentDetails = (commentId) => {
-//   // dispatch : ce que l'on envoie au reducer
-//   return (dispatch) => {
-//     return axios
-//       .get(`${process.env.REACT_APP_API_URL}api/comment/${commentId}`)
-//       .then((res) => {
-//         console.log('getCommentDetails actions', res.data);
-//         dispatch({ type: GET_COMMENT_DETAILS, payload: res.data });
-//       })
-//       .catch((err) => console.log(err));
-//   };
-// };
 
 export const DELETE_COMMENT = 'DELETE_COMMENT';
 

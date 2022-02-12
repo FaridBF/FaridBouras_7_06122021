@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 // import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { date_options } from '../utils/date';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteComment } from '../actions/comment.actions';
 
 /**
@@ -31,7 +31,6 @@ const Comment = (props) => {
     // document.location.reload(); // TODO: remplacer cette solution de secours
     // appeler la fonction du composant parent (CommentsList) qui appelle l'API pr récup liste commentaires
     props.getCommentsList();
-    // dispatch(getComments(currentComment.post_id));
   };
 
   return (

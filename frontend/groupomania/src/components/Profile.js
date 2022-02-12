@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 // import { useSelector } from 'react-redux';
 // import Form from 'react-bootstrap/Form';
@@ -23,15 +23,6 @@ const Profile = () => {
   // const userData = useSelector((state) => state.userReducer);
   // récupérer infos de l'utilisateur depuis localstorage
   const userInfo = JSON.parse(localStorage.getItem('user_details'));
-
-  // useEffect(() => {
-  //   // si picture modifiée dans redux, modifier dans localstorage
-  //   // const userInfoLocalStorage = JSON.parse(localStorage.getItem('user_details'));
-  //   const userInfoLocalStorage = JSON.parse(localStorage['user_details']);
-  //   userInfoLocalStorage.picture = userData.picture;
-  //   // console.log('userInfoLocalStorage.picture', userInfoLocalStorage.picture);
-  //   // console.log('nvelle image dans localstorage', userInfo.picture);
-  // }, [userData]);
 
   /**
    * Permet de supprimer le compte du User connecté
