@@ -105,14 +105,16 @@ const NewPost = () => {
               {/* Début affichage image à poster */}
               {postImage !== null ? (
                 <>
-                  <Col>Image ajoutée : {postImage.name}</Col>
-                  <Col className='d-flex '>
-                    <Button
-                      className='delete-button'
-                      onClick={() => setPostImage(null)}
-                    >
-                      <FontAwesomeIcon icon='fa-solid fa-trash' />
-                    </Button>
+                  <Col className='image_added '>
+                    Image ajoutée : {postImage.name}{' '}
+                    <Col>
+                      <Button
+                        className='delete-button-image-added'
+                        onClick={() => setPostImage(null)}
+                      >
+                        <FontAwesomeIcon icon='fa-solid fa-trash' />
+                      </Button>
+                    </Col>
                   </Col>
                 </>
               ) : (
@@ -162,16 +164,16 @@ const NewPost = () => {
                     <input
                       id='link-post'
                       name='link-post'
+                      className='added-link-post'
                       type='url'
-                      // pattern={'http://.*' || 'https://.*'}
-                      placeholder='Exemple de lien: https://groupomania.com'
+                      placeholder='https://groupomania.com'
                       value={postLink}
                       onChange={(e) => setPostLink(e.target.value)}
                       title='Choisir un lien'
                     />
                     <Col className='d-flex justify-content-start'>
                       <Button
-                        className='delete-button'
+                        className='delete-button-link-added'
                         onClick={() => setPostLink('')}
                       >
                         <FontAwesomeIcon

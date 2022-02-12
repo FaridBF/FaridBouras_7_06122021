@@ -41,10 +41,11 @@ const Comment = (props) => {
           <Card>
             <Card.Body>
               <Row className='d-flex align-items-center'>
-                <Col xs={2} md={1} lg={1}>
+                {/* <Col xs={2} md={1} lg={1}> */}
+                <Col className='img_mini_profil'>
                   <img
                     src={currentComment.picture}
-                    className='picture-profile-comment img-fluid'
+                    className='picture-profile-comment'
                     alt='Visuel du profil'
                   />
                 </Col>
