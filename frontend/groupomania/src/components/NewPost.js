@@ -45,6 +45,7 @@ const NewPost = () => {
       const data = new FormData();
       data.append('user_id', userInfo.id);
       data.append('content', postContent);
+      // if (postImage !== null) data.append('image', postImage);
       data.append('image', postImage);
       data.append('link', postLink);
       await dispatch(addPost(data));
@@ -103,7 +104,7 @@ const NewPost = () => {
                 </Button>
               </Form>
               {/* Début affichage image à poster */}
-              {postImage !== null ? (
+              {postImage !== null && postImage !== undefined ? (
                 <>
                   <Col className='image_added '>
                     Image ajoutée : {postImage.name}{' '}
