@@ -27,17 +27,15 @@ module.exports = (req, res, next) => {
           res.status(400).json({ message: 'Utilisateur invalide !' });
           // throw 'Utilisateur invalide';
         } else {
-          // permeettre l'accès à la route
+          // permettre l'accès à la route
           next();
         }
       });
     } else {
-      // TODO: à vérifier
       res.clearCookie();
       res.status(401).json({ message: 'Non autorisé' });
     }
   } catch {
-    // TODO: à vérifier
     res.status(401).json({
       error: 'Non autorisé'
     });

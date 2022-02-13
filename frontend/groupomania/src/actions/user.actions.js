@@ -7,7 +7,7 @@ export const GET_USER = 'GET_USER';
 export const UPLOAD_IMAGE = 'UPLOAD_IMAGE';
 
 /**
- * action qui récupère les données du USER et les envoie au reducer
+ * action qui récupère les données du USER, les enregistrer dans le localstorage et les envoie au reducer
  * le reducer va ensuite modifier l'état actuel du store
  * @param  {userId} : représente l'id de l'utilisateur
  */
@@ -38,6 +38,11 @@ export const getUser = (userId) => {
   };
 };
 
+/**
+ * Changer image de profil
+ * @param  {} data : image
+ * @param  {} id: id de l'utilisateur
+ */
 export const uploadImage = (data, id) => {
   // dispatch : ce que l'on envoie au reducer
   return (dispatch) => {
@@ -63,7 +68,6 @@ export const uploadImage = (data, id) => {
                 picture: res.data.picture
               })
             );
-            // TODO: voir comment faire autrement qu'en faisant un reload
             window.location.reload();
           });
       })

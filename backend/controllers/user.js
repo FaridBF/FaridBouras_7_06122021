@@ -43,15 +43,12 @@ exports.signup = (req, res) => {
       db.query(sql_query, userToCreate, (err, result) => {
         if (!result) {
           res.status(400).json({ err });
-          // console.log('erreur', err);
         } else {
           res.status(201).json({ message: 'Utilisateur créé avec succès !' });
-          // console.log('ok');
         }
       });
     })
     .catch((error) => res.status(500).json({ error }));
-  // .catch((error) => console.log(error));
 };
 
 /**
@@ -84,13 +81,10 @@ exports.login = (req, res) => {
           }
           const token = createToken(userFound.id);
           res.cookie('jwt', token, { httpOnly: true, expiresIn: maxAge });
-          // res.status(200)
           res.status(200).json({
             userId: userFound.id
           });
-          // console.log(res);
         });
-      // res.status(200).json({ message: 'Utilisateur connecté avec succès !' });
     }
   });
 };
@@ -113,7 +107,11 @@ exports.getUserDetails = (req, res) => {
   });
 };
 
-// TODO: faire commentaire
+/**
+ * Obtenir les droits d'utilisateur
+ * @param {email} req : email de l'utilisateur recherché
+ * @param {} res : réponse envoyée du back vers le front
+ */
 exports.getUserRightsByEmail = (req, res) => {
   const sql_query = `SELECT id, email, is_admin FROM user WHERE email = "${req.body.email}";`;
   const db = db_connection.getDB();
@@ -226,7 +224,6 @@ exports.updateUserImage = async (req, res) => {
     }
   });
   // si pas d'image envoyé par le front, supprimer req.body.picture
-  // TODO: voir si supprimer car on ne modifie rien d'autre que l'image
   if (req.body.picture === null) delete req.body.picture;
   // console.log('---REQ.BODY---', req.body);
   // console.log('---REQ.FILE---', req.file);
@@ -238,7 +235,6 @@ exports.updateUserImage = async (req, res) => {
       ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
       : `${req.protocol}://${req.get('host')}/images/default/defaultAvatar.png`
   };
-  // console.log('new image: ', userToUpdate.picture);
   const sql_query = `UPDATE user SET picture = "${userToUpdate.picture}", update_time = NOW() WHERE id = "${req.params.id}";`;
   db.query(sql_query, (err, result) => {
     if (err) {

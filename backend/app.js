@@ -22,12 +22,7 @@ const path = require('path');
  * C'est également contre les attaques par injection de commande (la config objet est facultatif)
  * Le middleware acceptera toutes les propriétés trouvées dans les propriétés body, query, et paramsobject de a req.
  */
-// var sanitizer = require('sanitizer');
-// const sanitizeMiddleware = require('sanitize-middleware');
-// const expressSanitizer = require('express-sanitizer');
-
-// Import du cors
-// const cors = require('cors');
+const expressSanitizer = require('express-sanitizer');
 
 // Lancement du framework Express
 const app = express();
@@ -76,12 +71,7 @@ app.use(
 );
 
 // Sanitize Middleware (contre les injections)
-// app.use(sanitizeMiddleware());
-
-// Mount express-sanitizer middleware here
-// app.use(expressSanitizer());
-
-// app.use(sanitizer());
+app.use(expressSanitizer());
 
 // Pour désactiver la mise en cache du navigateur
 app.use(nocache());

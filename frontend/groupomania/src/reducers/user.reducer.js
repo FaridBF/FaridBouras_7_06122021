@@ -18,9 +18,6 @@ export default function userReducer(state = initialState, action) {
         ...state,
         picture: action.payload
       };
-    //
-    // case USER_LOGOUT:
-    //   state = undefined;
     default:
       return state;
   }
