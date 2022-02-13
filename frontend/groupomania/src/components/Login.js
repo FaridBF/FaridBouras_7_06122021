@@ -62,7 +62,7 @@ const Login = () => {
   return (
     <>
       <Header />
-      <Container className='main-container'>
+      <Container className='main-container-login'>
         <Row className='align-items-center'>
           <Col xs={12} md={6} lg={6}>
             {/* <Image src='/assets/images/login.png' fluid /> */}
