@@ -102,7 +102,6 @@ const Admin = () => {
         <Container className='position-admin-container'>
           <Row className='admin-container'>
             <h1 className='style-admin-h1'>Gestion des droits utilisateurs</h1>
-            {/* TODO: améliorer */}
             <p className='style-admin-p'>
               Recherchez l'utilisateur via son adresse email pour lequel vous
               souhaitez modifier les droits administrateur.
