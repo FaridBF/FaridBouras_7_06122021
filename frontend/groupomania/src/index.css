@@ -9,7 +9,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* App */
+/* App page-container */
 .page-container {
   display: flex;
   flex-direction: column;
@@ -361,7 +361,6 @@ body {
 }
 
 .publication-date {
-  /* color: #8a8383; */
   color: #797272;
 }
 
@@ -473,6 +472,7 @@ img.publication-image {
   height: auto;
 }
 
+/*responsive*/
 @media screen and (min-width: 640px) and (max-width: 1400px) {
   .main-container {
     height: 85vh;
@@ -508,6 +508,7 @@ img.publication-image {
   }
 }
 
+/*responsive*/
 @media screen and (min-width: 0px) and (max-width: 640px) {
   .header-container {
     border-bottom: solid #ffe4e4 0.25rem;

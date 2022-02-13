@@ -6,13 +6,8 @@ const db_connection = require('../config/database');
  * @param  {code, message} res : réponse envoyée du back vers le front
  */
 exports.createComment = (req, res) => {
-  const commentToCreate = {
-    ...req.body
-  };
-  // const sql_query = `INSERT INTO comment SET ?`;
   const sql_query = `INSERT INTO comment (content, user_id, post_id) VALUES ("${req.body.content}", "${req.body.user_id}", "${req.body.post_id}"); `;
   const db = db_connection.getDB();
-  // db.query(sql_query, commentToCreate, (err, result) => {
   db.query(sql_query, (err, result) => {
     if (!result) {
       res.status(400).json({ message: 'Une erreur est survenue.' });
@@ -65,8 +60,12 @@ exports.updateComment = (req, res) => {
   });
 };
 
+/**
+ * Récupération de la liste des commentaires par publication
+ * @param {*} req : id de la publication (id de la publication dans params)
+ * @param {*} res : réponse envoyée du back vers le front
+ */
 exports.getCommentsList = (req, res) => {
-  // const sql_query = `SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content AS comment_content FROM user INNER JOIN comment ON comment.user_id = user.id INNER JOIN post ON comment.post_id = "${req.params.id}" ORDER BY comment.create_time DESC;`;
   const sql_query = `SELECT * FROM comment WHERE comment.post_id = "${req.params.id}" ORDER BY comment.create_time DESC;`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
@@ -78,14 +77,18 @@ exports.getCommentsList = (req, res) => {
   });
 };
 
+/**
+ * Récupération d'un commentaire par un id avec infos du user également
+ * @param {*} req (id du commentaire dans params)
+ * @param {*} res : réponse envoyée du back vers le front
+ */
+// TODO: non utilisé pour la V1, voir pour la V2
 exports.getCommentById = (req, res) => {
-  // const sql_query = `SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content AS comment_content FROM user INNER JOIN comment ON comment.user_id = user.id INNER JOIN post ON comment.post_id = "${req.params.id}" ORDER BY comment.create_time DESC;`;
   const sql_query = `SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.id, comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content 
   FROM comment
   LEFT JOIN user 
   ON comment.user_id=user.id 
   WHERE comment.id = "${req.params.id}";`;
-  // const sql_query = `SELECT * FROM comment WHERE id = "${req.params.id}";`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     if (!result) {
@@ -96,15 +99,18 @@ exports.getCommentById = (req, res) => {
   });
 };
 
+/**
+ * Récupération d'un commentaire par un id avec infos du user également
+ * @param {*} req (id du commentaire dans params)
+ * @param {*} res : réponse envoyée du back vers le front
+ */
 exports.getCommentsListByPostId = (req, res) => {
-  // const sql_query = `SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content AS comment_content FROM user INNER JOIN comment ON comment.user_id = user.id INNER JOIN post ON comment.post_id = "${req.params.id}" ORDER BY comment.create_time DESC;`;
   const sql_query = `SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.id, comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content 
   FROM comment
   LEFT JOIN user 
   ON comment.user_id=user.id 
   WHERE comment.post_id = "${req.params.id}"
   ORDER BY comment.create_time DESC;`;
-  // const sql_query = `SELECT * FROM comment WHERE id = "${req.params.id}";`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     if (!result) {

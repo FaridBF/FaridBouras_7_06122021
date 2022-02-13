@@ -21,6 +21,5 @@ router.put('/:id/admin-rights', auth, userCtrl.setAdminUser);
 
 // affichage de l'ensemble des données du User sans le mot de passe
 router.get('/:id', auth, userCtrl.getUserDetails);
-// router.get('/:id', userCtrl.getUserDetails);
 
 module.exports = router;

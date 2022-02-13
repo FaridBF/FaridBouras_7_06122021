@@ -21,3 +21,5 @@ DB_DATABASE=<nom_de_votre_base_de_données>
 DB_HOST=<valeur_de_la_machine_hôte_localhost_si_local>
 PORT=<valeur_du_port_si_3000_est_déja_occupé>
 SECRET_TOKEN=<votre_token_généré_après_connexion_utilisateur>
+SECRET_NAME=<votre_nom_choisi_pour_sécurisation_des_cookies>
+SECRET_SESSION=<votre\_\_nom_de_session_choisie_pour_sécurisation_des_cookies>

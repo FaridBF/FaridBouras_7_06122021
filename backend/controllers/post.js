@@ -9,8 +9,6 @@ const { json } = require('express');
  * @param  {code, message} res : réponse envoyée du back vers le front
  */
 exports.createPost = (req, res) => {
-  // si image ou link sont null, les supprimer
-  // if (req.body.image === null) delete req.body.image;
   if (req.body.link === null || req.body.link.length === 0)
     delete req.body.link;
   const postToCreate = {
@@ -36,9 +34,12 @@ exports.createPost = (req, res) => {
   });
 };
 
+/**
+ * Récupération de la liste des publications
+ * @param {*} req
+ * @param {code, message} res : réponse envoyée du back vers le front
+ */
 exports.getPostsList = (req, res) => {
-  // const sql_query =
-  //   "SELECT * FROM post, user WHERE post.user_id=user.id ORDER BY post.create_time DESC;";
   const sql_query =
     'SELECT post.id, post.content, post.image, post.link, post.create_time, post.user_id, user.is_admin, user.first_name, user.last_name, user.picture FROM post LEFT JOIN user ON post.user_id=user.id ORDER BY post.create_time DESC;';
   const db = db_connection.getDB();
@@ -218,7 +219,6 @@ exports.giveOpinion = (req, res) => {
     }
     // si 1 ou -1
     if (req.body.type === 1 || req.body.type === -1) {
-      // const db = db_connection.getDB();
       // ajouter la réaction
       db.query(sql_query_add, (err, result) => {
         console.log('giveOpinion', result);
