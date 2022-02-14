@@ -1,7 +1,6 @@
 const db_connection = require('../config/database');
 
 const fs = require('fs'); // accès aux # opérations liés au système de fichiers
-const { json } = require('express');
 
 /**
  * Création d'un post
@@ -40,8 +39,10 @@ exports.createPost = (req, res) => {
  * @param {code, message} res : réponse envoyée du back vers le front
  */
 exports.getPostsList = (req, res) => {
-  const sql_query =
-    'SELECT post.id, post.content, post.image, post.link, post.create_time, post.user_id, user.is_admin, user.first_name, user.last_name, user.picture FROM post LEFT JOIN user ON post.user_id=user.id ORDER BY post.create_time DESC;';
+  const sql_query = `
+  SELECT post.id, post.content, post.image, post.link, post.create_time, 
+  post.user_id, user.is_admin, user.first_name, user.last_name, user.picture 
+  FROM post LEFT JOIN user ON post.user_id=user.id ORDER BY post.create_time DESC;`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     if (!result) {
@@ -183,9 +184,15 @@ exports.getTotalDislikesByPostId = (req, res) => {
  * @param  {code, message} res : réponse envoyée du back vers le front
  */
 exports.giveOpinion = (req, res) => {
-  const sql_query_verify = `SELECT COUNT(*) AS opinion_result FROM user_post_opinion WHERE user_id = ${req.body.user_id} AND post_id = ${req.body.post_id}; `;
-  const sql_query_delete = `DELETE FROM user_post_opinion WHERE user_id = ${req.body.user_id} AND post_id = ${req.body.post_id};`;
-  const sql_query_add = `INSERT INTO user_post_opinion (user_id, post_id, type) VALUES (${req.body.user_id}, ${req.body.post_id}, ${req.body.type});`;
+  const sql_query_verify = `
+  SELECT COUNT(*) AS opinion_result 
+  FROM user_post_opinion WHERE user_id = ${req.body.user_id} AND post_id = ${req.body.post_id}; `;
+  const sql_query_delete = `
+  DELETE FROM user_post_opinion 
+  WHERE user_id = ${req.body.user_id} AND post_id = ${req.body.post_id};`;
+  const sql_query_add = `
+  INSERT INTO user_post_opinion (user_id, post_id, type) 
+  VALUES (${req.body.user_id}, ${req.body.post_id}, ${req.body.type});`;
   const db = db_connection.getDB();
 
   // Vérifier si une reaction est existante en bdd pour ce user sur ce post
@@ -199,7 +206,7 @@ exports.giveOpinion = (req, res) => {
     // si une reaction est existante en bdd pour ce user sur ce post (like ou dislike)
     if (result[0].opinion_result > 0) {
       // on supprime cette réaction
-      db.query(sql_query_delete, (err, result) => {
+      db.query(sql_query_delete, (err) => {
         if (err) {
           res.status(400).json({
             message:
@@ -221,7 +228,6 @@ exports.giveOpinion = (req, res) => {
     if (req.body.type === 1 || req.body.type === -1) {
       // ajouter la réaction
       db.query(sql_query_add, (err, result) => {
-        console.log('giveOpinion', result);
         if (!result) {
           res.status(400).json({
             message: "Une erreur est survenue lors de l'ajout de l'opinion."
