@@ -1,5 +1,4 @@
 import React from 'react';
-// import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -13,7 +12,8 @@ import { deleteComment } from '../actions/comment.actions';
 /**
  * Représente le composant d'un commentaire
  * @param {comment} props: objet représentant un commentaire
- * @param {getCommentsList} props: fonction du composant parent (CommentsList) qui appelle l'API pr récup liste commentaires
+ * @param {getCommentsList} props: fonction du composant parent (CommentsList)
+ * qui appelle l'API pr récup liste commentaires
  */
 const Comment = (props) => {
   // récupérer infos de l'utilisateur connecté

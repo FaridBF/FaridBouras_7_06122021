@@ -35,7 +35,7 @@ module.exports = (req, res, next) => {
       res.clearCookie();
       res.status(401).json({ message: 'Non autorisé' });
     }
-  } catch {
+  } catch (e) {
     res.status(401).json({
       error: 'Non autorisé'
     });

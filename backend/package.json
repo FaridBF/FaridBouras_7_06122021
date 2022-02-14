@@ -19,9 +19,34 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint \"./*/*.{js,jsx}\""
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "rules": {
+      "max-len": [
+        "error",
+        {
+          "code": 120
+        }
+      ]
+    },
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "env": {
+      "es6": true,
+      "node": true
+    }
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "eslint": "^8.9.0"
+  }
 }

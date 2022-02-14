@@ -6,7 +6,9 @@ const db_connection = require('../config/database');
  * @param  {code, message} res : réponse envoyée du back vers le front
  */
 exports.createComment = (req, res) => {
-  const sql_query = `INSERT INTO comment (content, user_id, post_id) VALUES ("${req.body.content}", "${req.body.user_id}", "${req.body.post_id}"); `;
+  const sql_query = `
+  INSERT INTO comment (content, user_id, post_id) 
+  VALUES ("${req.body.content}", "${req.body.user_id}", "${req.body.post_id}"); `;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     if (!result) {
@@ -47,7 +49,9 @@ exports.deleteComment = (req, res) => {
  * @param  {code, message} res : réponse envoyée du back vers le front
  */
 exports.updateComment = (req, res) => {
-  const sql_query = `UPDATE comment SET content = "${req.body.content}", update_time = NOW() WHERE id = "${req.params.id}"`;
+  const sql_query = `
+  UPDATE comment SET content = "${req.body.content}", 
+  update_time = NOW() WHERE id = "${req.params.id}"`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     if (!result) {
@@ -66,7 +70,8 @@ exports.updateComment = (req, res) => {
  * @param {*} res : réponse envoyée du back vers le front
  */
 exports.getCommentsList = (req, res) => {
-  const sql_query = `SELECT * FROM comment WHERE comment.post_id = "${req.params.id}" ORDER BY comment.create_time DESC;`;
+  const sql_query = `
+  SELECT * FROM comment WHERE comment.post_id = "${req.params.id}" ORDER BY comment.create_time DESC;`;
   const db = db_connection.getDB();
   db.query(sql_query, (err, result) => {
     if (!result) {
@@ -84,7 +89,9 @@ exports.getCommentsList = (req, res) => {
  */
 // TODO: non utilisé pour la V1, voir pour la V2
 exports.getCommentById = (req, res) => {
-  const sql_query = `SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.id, comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content 
+  const sql_query = `
+  SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.id, 
+  comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content 
   FROM comment
   LEFT JOIN user 
   ON comment.user_id=user.id 
@@ -105,7 +112,9 @@ exports.getCommentById = (req, res) => {
  * @param {*} res : réponse envoyée du back vers le front
  */
 exports.getCommentsListByPostId = (req, res) => {
-  const sql_query = `SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.id, comment.user_id AS author_id, comment.post_id, comment.create_time, comment.content 
+  const sql_query = `
+  SELECT user.is_admin, user.first_name, user.last_name, user.picture, comment.id, comment.user_id AS author_id, 
+  comment.post_id, comment.create_time, comment.content 
   FROM comment
   LEFT JOIN user 
   ON comment.user_id=user.id 

@@ -36,7 +36,10 @@ exports.signup = (req, res) => {
           'host'
         )}/images/default/defaultAvatar.png`
       };
-      const sql_query = `INSERT INTO user (is_admin, first_name, last_name, email, password, picture, create_time, update_time) VALUES (0, "${req.body.first_name}", "${req.body.last_name}", "${req.body.email}", "${hash}", "${userToCreate.picture}", NOW(), NOW());`;
+      const sql_query = `
+      INSERT INTO user (is_admin, first_name, last_name, email, password, picture, create_time, update_time) 
+      VALUES (0, "${req.body.first_name}", "${req.body.last_name}", "${req.body.email}", "${hash}",
+      "${userToCreate.picture}", NOW(), NOW());`;
       // connexion à la BDD
       const db = db_connection.getDB();
       // envoie de la requête SQL
@@ -91,7 +94,8 @@ exports.login = (req, res) => {
 
 /**
  * Affichage de l'ensemble des données du User sans le mot de passe
- * @param  {is_admin, first_name, last_name, email, picture, create_time, update_time} req : informations utilisateur reçues par le front
+ * @param  {is_admin, first_name, last_name, email, picture, create_time, update_time}
+ * req : informations utilisateur reçues par le front
  * @param  {code, l'ensemble des données du User sans le mot de passe} res : réponse envoyée du back vers le front
  */
 exports.getUserDetails = (req, res) => {
@@ -142,7 +146,8 @@ exports.setAdminUser = (req, res) => {
   };
 
   const sql_query_verify = `SELECT id, is_admin FROM user WHERE id = "${req.params.id}";`;
-  const sql_query_update_admin = `UPDATE user SET is_admin = "${userToAdmin.is_admin}", update_time = NOW() WHERE id = "${userToAdmin.id}";`;
+  const sql_query_update_admin = `
+  UPDATE user SET is_admin = "${userToAdmin.is_admin}", update_time = NOW() WHERE id = "${userToAdmin.id}";`;
   const db = db_connection.getDB();
   db.query(sql_query_verify, (err, result) => {
     // Vérifier si le user qui fait la demande est un admin
@@ -184,7 +189,9 @@ exports.updateUser = (req, res) => {
       req.file ? req.file.filename : 'defaultAvatar.png'
     }`
   };
-  const sql_query = `UPDATE user SET first_name = "${userToUpdate.first_name}", last_name = "${userToUpdate.last_name}", update_time = NOW() WHERE id = "${req.params.id}";`;
+  const sql_query = `
+  UPDATE user SET first_name = "${userToUpdate.first_name}", last_name = "${userToUpdate.last_name}", 
+  update_time = NOW() WHERE id = "${req.params.id}";`;
   const db = db_connection.getDB();
   // db.query(sql_query, userToUpdate, (err, result) => {
   db.query(sql_query, (err, result) => {
@@ -235,8 +242,9 @@ exports.updateUserImage = async (req, res) => {
       ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
       : `${req.protocol}://${req.get('host')}/images/default/defaultAvatar.png`
   };
-  const sql_query = `UPDATE user SET picture = "${userToUpdate.picture}", update_time = NOW() WHERE id = "${req.params.id}";`;
-  db.query(sql_query, (err, result) => {
+  const sql_query = `
+  UPDATE user SET picture = "${userToUpdate.picture}", update_time = NOW() WHERE id = "${req.params.id}";`;
+  db.query(sql_query, (err) => {
     if (err) {
       res.status(400).json({ message: 'Une erreur est survenue.' });
     } else {
